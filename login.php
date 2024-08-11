@@ -65,7 +65,7 @@
                 <label for="password">Password</label>
                 <div class="input-container">
                     <img src="./assets/images/eyeClose.png" alt="showPassword" name="imagePassword">
-                    <input type="password" name="password" required>
+                    <input type="password" name="password" value="<?=$formUserPasswordRegistered?>" required>
                 </div>
                 <div class="main-form-links">
                     <a href="assets/pages/passwordRecovery.php">Esqueceu sua senha?</a>

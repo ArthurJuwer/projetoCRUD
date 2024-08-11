@@ -18,6 +18,7 @@
     $formUserRepeatPassword = $_POST['repeatpassword'] ?? '';
 
     $showAlert = '';
+    $alertMessage = '';
 
     $userTypeDefault = 'user';
 
@@ -37,12 +38,15 @@
             header('Location: ../../login.php');
         } else {
             $showAlert = 'on';
+            $alertMessage = 'Ocorreu um erro. Usuario não cadastrado!';
+            
         }
     } 
 
     $passowordError = $formUserPassword !== $formUserRepeatPassword && $passwordNotValue;
     if($passowordError){
-        echo "SENHAS DIFERNTES";
+        $showAlert = 'on';
+        $alertMessage = 'Erro. Senhas diferentes';
     }
     ?>
     <main>
@@ -53,18 +57,18 @@
         <div class="main-form">
             <form action="<?=$_SERVER['PHP_SELF']?>" method="post" name="formRegister">
                 <label for="email">E-mail</label>
-                <input type="email" name="email" required>
+                <input type="email" name="email" value="<?=$formUserEmail?>" required>
 
                 <label for="password">Senha: </label>
                 <div class="input-container">
                     <img src="../images/eyeClose.png" alt="showPassword" name="imagePassword">
-                    <input type="password" name="password" required>
+                    <input type="password" name="password" value="<?=$formUserPassword?>" required>
                 </div>
                 
                 <label for="repeatpassword">Confirme Senha: </label>
                 <div class="input-container">
                     <img src="../images/eyeClose.png" alt="showPassword" name="imagePassword">
-                    <input type="password" name="repeatpassword" required>
+                    <input type="password" name="repeatpassword" value="<?=$formUserRepeatPassword?>"required>
                 </div>
 
                 <div class="main-form-terms">
@@ -72,7 +76,7 @@
                     <p>Concordo com os <a href="">Termos de Uso</a> e <a href="">Política de Privacidade.</a></p>
                 </div>
                 <div class="alert-message <?=$showAlert?>" >
-                    <p>Ocorreu um erro usuario não cadastrado.</p>
+                    <p><?=$alertMessage?></p>
                 </div>
                 <input type="submit" value="CRIAR CONTA">
             </form>
