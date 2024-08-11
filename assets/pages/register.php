@@ -10,31 +10,47 @@
 
     <?php 
 
-    include './conexao.php';
 
-    
+    ## FALTA ESCONDER OS CARACTERES E DAR A OPCAO DE MOSTRAR
+
+    include '../php/conexao.php';
 
     $formUserEmail = $_POST['email'] ?? '';
     $formUserPassword = $_POST['password'] ?? '';
+    $formUserRepeatPassword = $_POST['repeatpassword'] ?? '';
 
     $showAlert = '';
 
-    $userType = 'default';
+    $userTypeDefault = 'user';
 
     date_default_timezone_set('America/Sao_Paulo');
     $userTimeRegistered =   date('d/m/Y H:i:s');
 
     $sql = "INSERT INTO `lista_usuarios`
     (`email`, `password`, `user_type`, `time_registered`) VALUES
-    ('$formUserEmail','$formUserPassword','$userType','$userTimeRegistered')";
+    ('$formUserEmail','$formUserPassword','$userTypeDefault','$userTimeRegistered')";
 
-    if($formUserEmail != '' && $formUserPassword != ''){
+    $passwordNotValue = $formUserPassword != '' && $formUserRepeatPassword != '';
+
+    $passwordConfirm = $formUserPassword === $formUserRepeatPassword && $passwordNotValue;
+
+    if($passwordConfirm){
         if(mysqli_query($conn, $sql)) {
-            header('Location: ../pages/examplePage.html');
+            header('Location: ../../login.php');
         } else {
             $showAlert = 'on';
         }
+    } 
+
+    $passowordError = $formUserPassword !== $formUserRepeatPassword && $passwordNotValue;
+    if($passowordError){
+        echo "SENHAS DIFERNTES";
     }
+
+    
+
+    
+
     
     ?>
     
@@ -44,7 +60,7 @@
             <h3>Crie a sua conta para acessar nosso software.</h3>
         </div>
         <div class="main-form">
-            <form action="<?=$_SERVER['PHP_SELF']?>" method="post">
+            <form action="<?=$_SERVER['PHP_SELF']?>" method="post" name="formRegister">
                 <label for="email">E-mail</label>
                 <input type="email" name="email" required>
                 <label for="password">Password</label>

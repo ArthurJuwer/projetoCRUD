@@ -25,14 +25,27 @@
     $emailSemelhantes = $linha['email'] ?? 'valor invalido';
     $passwordSemelhantes = $linha['password'] ?? 'valor invalido';
 
+    $userType = $linha['user_type'] ?? 'valor invalido';
+
     if($formUserEmailRegistered != ''){
-        if($formUserEmailRegistered == $emailSemelhantes && $formUserPasswordRegistered == $passwordSemelhantes) {    
-            header('Location: assets/pages/examplePage.html');
+
+        $valoresIguaisDataBaseAndForm = ($formUserEmailRegistered == $emailSemelhantes && $formUserPasswordRegistered == $passwordSemelhantes);
+
+        if($valoresIguaisDataBaseAndForm) {   
+            if($userType == 'user'){
+                header('Location: assets/pages/user/user_dashboard.html');
+            } else {
+                header('Location: assets/pages/admin/admin_dashboard.html');
+            }
+            
             $showAlert = '';
         } else {
             $showAlert = 'on';
         }
     }
+
+    
+    
 
     ?>
     <main>
@@ -47,13 +60,13 @@
                 <label for="password">Password</label>
                 <input type="text" name="password" value="<?=$formUserPasswordRegistered?>" required>
                 <div class="main-form-links">
-                    <a href="">Esqueceu sua senha?</a>
+                    <a href="assets/pages/passwordRecovery.php">Esqueceu sua senha?</a>
                 </div>
                 <div class="alert-message <?=$showAlert?>" >
                     <p>Verifique se o email ou senha estão corretos.</p>
                 </div>
                 <input type="submit" value="ENTRAR">
-                <p>Não tem conta? <a href="assets/php/register.php">Criar Conta</a></p>
+                <p>Não tem conta? <a href="assets/pages/register.php">Criar Conta</a></p>
             </form>
         </div>
     </main>
