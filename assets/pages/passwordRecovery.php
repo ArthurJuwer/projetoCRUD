@@ -5,13 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Remember Password</title>
     <link rel="stylesheet" href="../css/passwordRecovery.css">
+    <script src="../js/passwordRecovery.js" defer></script>
 </head>
 <body>
 <?php
 
-## FALTA ESCONDER OS CARACTERES E DAR A OPCAO DE MOSTRAR
-## VERIFICAR SE O EMAIL É IGUAL A UM EXISTENTE NO DB
-## FAZER O SQL PARA ALTERAR A SENHA DO EMAIL, VER COMO E NO REGISTER  A PARTE DE SER O MESMO EMAIL E SENHA LIKE
+## CRIAR UM EMAIL PARA ENVIOS E MUDAR NO XAMP
 
 
 session_start();
@@ -28,8 +27,11 @@ if (($_SESSION['initialized']) == false) {
 }
 
 $emailForm = $_POST['email'] ?? '';
+
 $codForm = $_POST['cod'] ?? '';
 $step = $_SESSION['step'] ?? 1;
+$showAlert = '';
+$alertMessage = '';
 
 $fraseDestaque = 'Primeiro digite seu email para mandarmos um novo código.';
 
@@ -44,27 +46,40 @@ if (!isset($_SESSION['randomCod'])) {
 
 include '../php/conexao.php';
 
+$sql = "SELECT * FROM lista_usuarios WHERE email LIKE '%$emailForm%'";
 
+$dados = mysqli_query($conn, $sql);
+$linha = mysqli_fetch_assoc($dados);
+
+$listaEmailDb = $linha['email'];
 
 if ($step == 1) {
-    $para = $emailForm;
-    $assunto = 'Recuperação de senha';
-    $mensagem = "Use o código a seguir para criar uma nova senha. 
-    Se você não solicitou esse código, não precisa se preocupar. 
-    Basta ignorar este e-mail.
-    CODIGO: " . $_SESSION['randomCod'];
-    $headers = 'From:' . $emailForm;
+    if($listaEmailDb === $emailForm){
+        $para = $emailForm;
+        $assunto = 'Recuperação de senha';
+        $mensagem = "Use o código a seguir para criar uma nova senha.\nSe você não solicitou esse código, não precisa se preocupar.\nBasta ignorar este e-mail.\nCODIGO: " . $_SESSION['randomCod'];
+        $headers = 'From:' . $emailForm;
 
-    if (mail($para, $assunto, $mensagem, $headers)) {
-        $fraseDestaque = "Informe o código enviado para $emailForm no campo abaixo.";
-        $step = 2;
-        $_SESSION['step'] = $step;
-        $showVerificationCod = 'on';
-        $showVerificationEmail = '';
-        $showVerificationPassword = '';
+        if (mail($para, $assunto, $mensagem, $headers)) {
+            $fraseDestaque = "Informe o código enviado para $emailForm no campo abaixo.";
+            $step = 2;
+            $_SESSION['step'] = $step;
+            $showVerificationCod = 'on';
+            $showVerificationEmail = '';
+            $showVerificationPassword = '';
+            $_SESSION['email'] = $emailForm;
+        } else {
+            $alertMessage = 'Falha ao enviar o e-mail.';
+            $showAlert = 'on';
+        } 
     } else {
-        $showAlert = 'on';
-    } 
+        if($emailForm !== '' ){
+            $alertMessage = 'Este e-mail não existe. ';
+            $showAlert = 'on';
+        }
+        
+    }
+    
 } elseif ($step == 2) {
     $showAlert = '';
     if($codForm == $_SESSION['randomCod']){
@@ -79,7 +94,9 @@ if ($step == 1) {
         $showVerificationCod = 'on';
         $showVerificationEmail = '';
         $showVerificationPassword = '';
-        $fraseDestaque = "Informe o código correto enviado para $emailForm.";
+        $fraseDestaque = 'Informe o código enviado para ' . $_SESSION['email'] . ' no campo abaixo.';
+        $alertMessage = 'Você digiou o código errado.';
+        $showAlert = 'on';
     }
     
 } elseif ($step == 3) {
@@ -88,6 +105,13 @@ if ($step == 1) {
     $passwordConfirm = $password === $repeatPassword;
 
     if($passwordConfirm){
+
+        $emailSaved = $_SESSION['email'];
+
+        $sql = "UPDATE lista_usuarios SET password = '$password' WHERE email = '$emailSaved'";
+
+        mysqli_query($conn, $sql);
+
         $_SESSION['step'] = $step;
         $_SESSION['initialized'] = false;
         header('Location: ../../login.php');
@@ -96,15 +120,14 @@ if ($step == 1) {
         $showVerificationCod = '';
         $showVerificationEmail = '';
         $showVerificationPassword = 'on';
-        $fraseDestaque = "Verifique se as senhas estão iguais.";
+        $fraseDestaque = "Preencha os campos com a nova senha.";
+        $alertMessage = 'Verifique se as senhas estão iguais.';
+        $showAlert = 'on';
     }
-
 }
 
 ?>
     <main>
-        
-    
         <div class="main-header">
             <h1>Logotipo</h1>
             <h3><?=$fraseDestaque?></h3>
@@ -128,15 +151,22 @@ if ($step == 1) {
 
         <form class="<?=$showVerificationPassword?>" action="<?=$_SERVER['PHP_SELF']?>" method="post">
             <div class="info-form">
-                <label for="password">Digite sua nova senha: </label>
-                <input type="text" name="password">
-                <label for="repeatpassword">Confirme a senha: </label>
-                <input type="text" name="repeatpassword">
+            <label for="password">Digite a senha: </label>
+                <div class="input-container">
+                    <img src="../images/eyeClose.png" alt="showPassword" name="imagePassword">
+                    <input type="password" name="password" required>
+                </div>
+                
+                <label for="repeatpassword">Confirme a senha:</label>
+                <div class="input-container">
+                    <img src="../images/eyeClose.png" alt="showPassword" name="imagePassword">
+                    <input type="password" name="repeatpassword" required>
+                </div>
                 <input type="submit" value="SALVAR">
             </div>
         </form>
-        <div class="alert-error <?=$showAlert?>">
-            <p>Falha ao enviar o e-mail.<p>
+        <div class="<?=$showAlert?> alert-error">
+            <p><?=$alertMessage?><p>
         </div>
     </main>
 </body>

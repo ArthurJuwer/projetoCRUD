@@ -65,6 +65,19 @@ main{
     }
     
 }
+.input-container {
+    position: relative;
+    width: 100%;
+}
+.input-container img {
+    width: 1.5rem;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #aaa;
+}
+  
 .alert-message {
     display: none;
     p{
@@ -78,5 +91,5 @@ main{
     }
 }
 .on{
-    display: block;
+    display: block !important;
 }

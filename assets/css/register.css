@@ -31,13 +31,19 @@ main{
         row-gap: 0.5rem;
     }
 
-    input[type='text'], input[type='email'], input[type='submit']{
+    input{
         width: 28rem;
         height: 2.8rem;
         border: 0.15rem solid #333333;
         border-radius: 0.5rem;
         padding-left: 1rem;
         font-size: 1rem;
+    }
+
+    input[type='checkbox']{
+        width: 1rem;
+        height: 1rem;
+
     }
 
     input[type="submit"]{
@@ -65,6 +71,19 @@ main{
     }
     
 }
+.input-container {
+    position: relative;
+    width: 100%;
+}
+.input-container img {
+    width: 1.5rem;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #aaa;
+}
+  
 .alert-message {
     display: none;
     p{

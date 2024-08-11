@@ -5,10 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" href="assets/css/login.css">
+    <script src="assets/js/login.js" defer></script>
 </head>
 <body>
     <?php 
-
+    
     include './assets/php/conexao.php';
 
     $formUserEmailRegistered = $_POST['email'] ?? '';
@@ -32,10 +33,14 @@
         $valoresIguaisDataBaseAndForm = ($formUserEmailRegistered == $emailSemelhantes && $formUserPasswordRegistered == $passwordSemelhantes);
 
         if($valoresIguaisDataBaseAndForm) {   
+            
+            session_start();
+
+            $_SESSION['nome_usuario'] = $formUserEmailRegistered;
             if($userType == 'user'){
-                header('Location: assets/pages/user/user_dashboard.html');
+                header('Location: assets/pages/user/user_dashboard.php');
             } else {
-                header('Location: assets/pages/admin/admin_dashboard.html');
+                header('Location: assets/pages/admin/admin_dashboard.php');
             }
             
             $showAlert = '';
@@ -58,7 +63,10 @@
                 <label for="email">E-mail</label>
                 <input type="email" name="email" value="<?=$formUserEmailRegistered?>" required>
                 <label for="password">Password</label>
-                <input type="text" name="password" value="<?=$formUserPasswordRegistered?>" required>
+                <div class="input-container">
+                    <img src="./assets/images/eyeClose.png" alt="showPassword" name="imagePassword">
+                    <input type="password" name="password" required>
+                </div>
                 <div class="main-form-links">
                     <a href="assets/pages/passwordRecovery.php">Esqueceu sua senha?</a>
                 </div>

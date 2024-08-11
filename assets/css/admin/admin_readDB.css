@@ -1,0 +1,40 @@
+h2 {
+    margin-bottom: 1.2rem;
+}
+
+.custom-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.custom-table th,
+.custom-table td{
+    padding: 0.5rem 0.5rem;
+    text-align: left;
+    border: 1px solid #ddd;
+    font-size: 0.8rem;
+}
+
+.custom-table th{
+    background-color: #4CAF50;
+    color: white;
+    font-size: 0.8rem;
+}
+
+.custom-table tr:hover{
+    background-color: #ddd;
+}
+
+.custom-table td{
+    color: #555;
+}
+.ticket{
+    padding: 0.2rem;
+    border-radius: 0.425rem;
+    color: #fff;
+    font-size: 0.725rem;
+    background: #4CAF50;
+
+}
