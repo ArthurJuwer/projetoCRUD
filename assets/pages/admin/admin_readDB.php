@@ -68,13 +68,18 @@
         while($linha = mysqli_fetch_assoc($dados)) {
             $email = $linha['email'];
             $user_type = $linha['user_type'];
+            $sobrenome = $linha['lastName'];
+            $nome = $linha['firstName'];
+            $user_type = $linha['user_type'];
+            $supervisor = $linha['supervisor'];
+            $telefone = $linha['phone'];
 
             echo "<tr>
                 <td>$user_type</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>$sobrenome</td>
+                <td>$nome</td>
+                <td>$supervisor</td>
+                <td>$telefone</td>
                 <td>$email</td>
                 <td></td>
                 <td></td>

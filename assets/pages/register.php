@@ -49,6 +49,9 @@
         $alertMessage = 'Erro. Senhas diferentes';
     }
     ?>
+    <div class="back-page">
+        <a href="javascript:history.back()">Voltar</a>
+    </div>
     <main>
         <div class="main-header">
             <h1>Logotipo</h1>

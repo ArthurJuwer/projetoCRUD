@@ -93,3 +93,8 @@ main{
 .on{
     display: block !important;
 }
+.container-captchaba{
+    margin-top: 1.5rem;
+    display: flex;
+    width: 100%;
+}

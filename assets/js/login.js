@@ -14,3 +14,8 @@ function mostrarSenha(passInput, alterateImage) {
 if (changeImage && passwordInput) {
     changeImage.addEventListener("click", () => mostrarSenha(passwordInput, changeImage));
 }
+
+
+var onloadCallback = function() {
+};
+

@@ -7,58 +7,89 @@
     <link rel="stylesheet" href="../../css/layout.css">
     <link rel="stylesheet" href="../../css/user/user_perfil.css">
     <script src="https://kit.fontawesome.com/e374ba1aa3.js" crossorigin="anonymous" defer></script>
-    <script src="../../js/user/user_perfil.js"defer></script>
+    <script src="../../js/user/user_perfil.js" defer></script>
 </head>
 <body>
     <?php 
-    ## AUMENTAR BANCO DE DADOS  
-    ## FAZER FUNCAO CASO DE UM SUBMIT ATUALIZAR 
-    ## TERMINAR O MYSQL
     session_start();
-
-    $emailUser = $_SESSION['nome_usuario'];
-
     include '../../php/conexao.php';
 
-    $sql = "SELECT * FROM lista_usuarios WHERE email LIKE '%$emailUser%'";
+    // Verifica se o formulário foi enviado
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        // Obtém os dados do formulário e escapa as strings para prevenir SQL Injection
+        $cargo = mysqli_real_escape_string($conn, $_POST['cargo']);
+        $primeiroNome = mysqli_real_escape_string($conn, $_POST['primeiroNome']);
+        $sobrenome = mysqli_real_escape_string($conn, $_POST['sobrenome']);
+        $genero = mysqli_real_escape_string($conn, $_POST['genero']);
+        $funcionario = mysqli_real_escape_string($conn, $_POST['funcionario']);
+        $supervisor = mysqli_real_escape_string($conn, $_POST['supervisor']);
+        $password = mysqli_real_escape_string($conn, $_POST['password']);
+        $endereco = mysqli_real_escape_string($conn, $_POST['endereco']);
+        $cep = mysqli_real_escape_string($conn, $_POST['cep']);
+        $municipio = mysqli_real_escape_string($conn, $_POST['municipio']);
+        $pais = mysqli_real_escape_string($conn, $_POST['pais']);
+        $estado = mysqli_real_escape_string($conn, $_POST['estado']);
+        $celular = mysqli_real_escape_string($conn, $_POST['celular']);
 
+        $emailUser = $_SESSION['nome_usuario'];
+
+        // Atualiza os dados do usuário no banco de dados
+        $sql = "UPDATE `lista_usuarios` SET
+            `position` = '$cargo',
+            `firstName` = '$primeiroNome',
+            `lastName` = '$sobrenome',
+            `gender` = '$genero',
+            `isEmployee` = '$funcionario',
+            `supervisor` = '$supervisor',
+            `password` = '$password',
+            `address` = '$endereco',
+            `zipCode` = '$cep',
+            `city` = '$municipio',
+            `country` = '$pais',
+            `state` = '$estado',
+            `phone` = '$celular'
+            WHERE `email` = '$emailUser'";
+
+        if (mysqli_query($conn, $sql)) {
+            echo "<p>Dados atualizados com sucesso!</p>";
+        } else {
+            echo "<p>Erro: " . mysqli_error($conn) . "</p>";
+        }
+    }
+
+    // Recupera os dados do usuário
+    $emailUser = $_SESSION['nome_usuario'];
+    $sql = "SELECT * FROM lista_usuarios WHERE email = '$emailUser'";
     $dados = mysqli_query($conn, $sql);
     $linha = mysqli_fetch_assoc($dados);
 
-
-    $preencherInformacoesCargo = $linha['cargo'] ?? '';
-    $preencherInformacoesPrimeiroNome = $linha['primeiroNome'] ?? '';
-    $preencherInformacoesSobrenome = $linha['sobrenome'] ?? '';
+    $preencherInformacoesPrimeiroNome = $linha['firstName'] ?? '';
+    $preencherInformacoesSobrenome = $linha['lastName'] ?? '';
+    $preencherInformacoesPosition = $linha['position'] ?? '';
     $preencherInformacoesUser = $linha['user_type'] ?? '';
-    $preencherInformacoesGenero = $linha['genero'] ?? '';
-    $preencherInformacoesIsFuncionario = $linha['isFuncionario'] ?? '';
+    $preencherInformacoesGenero = $linha['gender'] ?? '';
+    $preencherInformacoesIsFuncionario = $linha['isEmployee'] ?? '';
     $preencherInformacoesSupervisor = $linha['supervisor'] ?? '';
     $preencherInformacoesUsuarioExterno = $linha['user_extern'] ?? '';
-
     $preencherInformacoesPass = $linha['password'] ?? '';
-
-    $preencherInformacoesEndereco = $linha['endereco'] ?? '';
-    $preencherInformacoesCep = $linha['cep'] ?? '';
-    $preencherInformacoesMunicipio = $linha['municipio'] ?? '';
-    $preencherInformacoesPais = $linha['pais'] ?? '';
-    $preencherInformacoesEstado = $linha['estado'] ?? '';
-    $preencherInformacoesCelular = $linha['celular'] ?? '';
+    $preencherInformacoesEndereco = $linha['address'] ?? '';
+    $preencherInformacoesCep = $linha['zipCode'] ?? '';
+    $preencherInformacoesMunicipio = $linha['city'] ?? '';
+    $preencherInformacoesPais = $linha['country'] ?? '';
+    $preencherInformacoesEstado = $linha['state'] ?? '';
+    $preencherInformacoesCelular = $linha['phone'] ?? '';
     $preencherInformacoesEmail = $linha['email'] ?? '';
-    
-    
-
-
     ?>
     <section class="left-menu">
         <nav>
             <div class="title-left-menu">
-            <i class="fa-solid fa-user"></i>
+                <i class="fa-solid fa-user"></i>
                 <h3>Usuarios e Grupos</h3>
             </div>
             <h4>Usuario</h4>
             <ul> 
-            <li><a href="./user_dashboard.php">Inicio</a></li>
-            <li><a href="./user_profile.php">Meu Perfil</a></li>
+                <li><a href="./user_dashboard.php">Inicio</a></li>
+                <li><a href="./user_profile.php">Meu Perfil</a></li>
             </ul>
             <h4>Grupos</h4>
             <ul> 
@@ -72,9 +103,9 @@
     <section class="content">
         <h2>Mudar Informações</h2>
         <form action="<?=$_SERVER['PHP_SELF']?>" method="post">
-        <div class="row-form">
+            <div class="row-form">
                 <label for="cargo">Cargo: </label>
-                <input type="text" name="cargo" value="<?=$preencherInformacoesCargo?>">
+                <input type="text" name="cargo" value="<?=$preencherInformacoesPosition?>">
             </div>
             <div class="row-form">
                 <label for="primeiroNome">Primeiro nome: </label>
@@ -85,42 +116,43 @@
                 <input type="text" name="sobrenome" value="<?=$preencherInformacoesSobrenome?>">
             </div>
             <div class="row-form">
-                <label for="isAdmin">Adminstrador do sistema: </label>
+                <label for="isAdmin">Administrador do sistema: </label>
                 <div class="row-form-icon">
                     <i class="fa-solid fa-user"></i>
                     <input type="text" name="isAdmin" value="<?=$preencherInformacoesUser?>" disabled>
                 </div>
             </div>
             <div class="row-form">
-                <label for="genero">Genero: </label>
+                <label for="genero">Gênero: </label>
                 <select name="genero">
-                    <option value="generoMasc">Masculino</option>
-                    <option value="generoFem">Feminino</option>
-                    <option value="generoUndefined">Prefiro não informar</option>
+                    <option value="Masculino" <?= ($preencherInformacoesGenero == 'Masculino') ? 'selected' : '' ?>>Masculino</option>
+                    <option value="Feminino" <?= ($preencherInformacoesGenero == 'Feminino') ? 'selected' : '' ?>>Feminino</option>
+                    <option value="Undefined" <?= ($preencherInformacoesGenero == 'generoUndefined') ? 'selected' : '' ?>>Prefiro não informar</option>
                 </select>
             </div>
             <div class="row-form">
-                <label for="funcionario">Funcionario: </label>
+                <label for="funcionario">Funcionário: </label>
                 <select name="funcionario">
-                    <option value="isFuncionarioFalse">Não</option>
-                    <option value="isFuncionarioTrue">Sim</option>
+                    <option value="isFuncionarioFalse" <?= ($preencherInformacoesIsFuncionario == 'isFuncionarioFalse') ? 'selected' : '' ?>>Não</option>
+                    <option value="isFuncionarioTrue" <?= ($preencherInformacoesIsFuncionario == 'isFuncionarioTrue') ? 'selected' : '' ?>>Sim</option>
                 </select>
             </div>
             <div class="row-form">
                 <label for="supervisor">Supervisor: </label>
                 <select name="supervisor">
+                <option value="nao definido" <?=($supervisor == 'nao definido') ? 'selected': '' ?>>Não Definido</option>
                     <optgroup label="Grupo 1">
-                        <option value="g1Name">Arthur</option>
-                        <option value="g1Name">Rodrigo</option>
+                        <option value="arthur" <?= ($preencherInformacoesSupervisor == 'arthur') ? 'selected' : '' ?>>Arthur</option>
+                        <option value="rodrigo" <?= ($preencherInformacoesSupervisor == 'rodrigo') ? 'selected' : '' ?>>Rodrigo</option>
                     </optgroup>
                     <optgroup label="Grupo 2">
-                        <option value="g2Name">Leonardo</option>
-                        <option value="g2Name">Eduardo</option>
+                        <option value="leonardo" <?= ($preencherInformacoesSupervisor == 'leonardo') ? 'selected' : '' ?>>Leonardo</option>
+                        <option value="eduardo" <?= ($preencherInformacoesSupervisor == 'eduardo') ? 'selected' : '' ?>>Eduardo</option>
                     </optgroup> 
                 </select>
             </div>
             <div class="row-form">
-                <label for="Nome">Usuario Externo? </label>
+                <label for="Nome">Usuário Externo? </label>
                 <p>Interno</p>
             </div>
             <hr>
@@ -133,44 +165,43 @@
             </div>
             <hr>
             <div class="row-form">
-                <label for="endereço">Endereço: </label>
-                <textarea name="endereco"></textarea value="<?=$preencherInformacoesEndereco?>">
+                <label for="endereco">Endereço: </label>
+                <textarea name="endereco"><?=$preencherInformacoesEndereco?></textarea>
             </div>
             <div class="row-form">
-                <label for="cep">Cep: </label>
+                <label for="cep">CEP: </label>
                 <input type="text" name="cep" value="<?=$preencherInformacoesCep?>">
             </div>
             <div class="row-form">
-                <label for="municipio">Municipio: </label>
+                <label for="municipio">Município: </label>
                 <input type="text" name="municipio" value="<?=$preencherInformacoesMunicipio?>">
             </div>
             <div class="row-form">
-                <label for="Nome">País: </label>
+                <label for="pais">País: </label>
                 <div class="row-form-icon">
                     <i class="fa-solid fa-earth-americas"></i>
                     <input type="text" name="pais" value="<?=$preencherInformacoesPais?>">
                 </div>
             </div>
             <div class="row-form">
-                <label for="Nome">Estado: </label>
+                <label for="estado">Estado: </label>
                 <div class="row-form-icon">
                     <i class="fa-solid fa-map-location-dot"></i>
                     <input type="text" name="estado" value="<?=$preencherInformacoesEstado?>">
                 </div>
             </div>
             <div class="row-form">
-                <label for="Nome">Celular: </label>
+                <label for="celular">Celular: </label>
                 <div class="row-form-icon">
                     <i class="fa-solid fa-phone"></i>
                     <input type="tel" name="celular" value="<?=$preencherInformacoesCelular?>">
                 </div>
             </div>
             <div class="row-form">
-                <label for="Nome">Email: </label>
-                    <div class="row-form-icon">
-                        <i class="fa-solid fa-at"></i>
-                        <input type="text" name="pais" value="<?=$preencherInformacoesEmail?>">
-                    </div>
+                <label for="email">Email: </label>
+                <div class="row-form-icon">
+                    <i class="fa-solid fa-at"></i>
+                    <input type="text" name="email" value="<?=$preencherInformacoesEmail?>" disabled>
                 </div>
             </div>
             <div class="end-form">

@@ -100,3 +100,13 @@ main{
 .on{
     display: block;
 }
+.back-page{
+    position: absolute;
+    left: 1rem;
+    top: 1rem;
+    a{
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #2E7D32;
+    }   
+}
