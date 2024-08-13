@@ -3,11 +3,11 @@ const changeImage = document.getElementsByName("imagePassword")[0];
 
 function mostrarSenha(passInput, alterateImage) {
     if (passInput.type === "password") {
-        alterateImage.src = '../../images/eyeClose.png';
+        alterateImage.src = '../../assets/images/eyeClose.png';
         passInput.type = "text";
     } else {
         passInput.type = "password";
-        alterateImage.src = '../../images/eyeOpen.png';
+        alterateImage.src = '../../assets/images/eyeOpen.png';
     }
 }
 

@@ -46,11 +46,20 @@ body{
 }
 
 .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     padding: 2rem;
     height: 8rem;
     grid-column: 2 / 4;
     grid-row: 1 / 2;
     border-bottom: 1px solid #000;
+
+    .header-icons i{
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: #000;
+    }
 }
 
 .content {

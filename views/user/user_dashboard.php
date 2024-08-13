@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User - Dashboard</title>
-    <link rel="stylesheet" href="../../css/layout.css">
+    <link rel="stylesheet" href="../../assets/css/layout.css">
     <script src="https://kit.fontawesome.com/e374ba1aa3.js" crossorigin="anonymous" defer></script>
 </head>
 <body>
@@ -32,8 +32,14 @@
             </ul>
         </nav>
     </section>
+
     <section class="header">
-        <h1>Seja Bem-Vindo, <?=$emailUser?></h1>
+        <div class="header-title">
+            <h1>Seja Bem-Vindo, <?=$emailUser?></h1>
+        </div>
+        <div class="header-icons">
+            <a href="../../login.php"><i class="fa-solid fa-right-from-bracket"></i></a>
+        </div>
     </section>
     <section class="content">
         <h1>Conteudo</h1>

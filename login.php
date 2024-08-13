@@ -7,83 +7,12 @@
     <link rel="stylesheet" href="assets/css/login.css">
     <script src="assets/js/login.js" defer></script>
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-    <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"async defer></script>
 </head>
 <body>
     <?php 
-    
-    include './assets/php/conexao.php';
-
-
-session_start();
-
-if (($_SESSION['initialized']) == false) {
-
-    session_unset(); 
-    session_destroy(); 
-    session_start(); 
-    
-
-    $_SESSION['initialized'] = true;
-}
-    
-
-        $_SESSION['tentativas'] ?? 0;
-    
-
-    echo $_SESSION['tentativas'];
-    $formUserEmailRegistered = $_POST['email'] ?? '';
-
-    $formUserPasswordRegistered = $_POST['password'] ?? '';
-
-    $showAlert = '';
-
-function registrarTentativa() {
-    $_SESSION['tentativas']++;
-}
-
-    if($_SESSION['tentativas'] < 3){
-        $sql = "SELECT * FROM lista_usuarios WHERE email LIKE '%$formUserEmailRegistered%'";
-
-        $dados = mysqli_query($conn, $sql);
-        $linha = mysqli_fetch_assoc($dados);
-
-        $emailSemelhantes = $linha['email'] ?? 'valor invalido';
-        $passwordSemelhantes = $linha['password'] ?? 'valor invalido';
-
-        $userType = $linha['user_type'] ?? 'valor invalido';
-
-        if($formUserEmailRegistered != ''){
-
-            $valoresIguaisDataBaseAndForm = ($formUserEmailRegistered == $emailSemelhantes && $formUserPasswordRegistered == $passwordSemelhantes);
-
-            if($valoresIguaisDataBaseAndForm) {   
-                
-                session_start();
-
-                $_SESSION['nome_usuario'] = $formUserEmailRegistered;
-                if($userType == 'user'){
-                    header('Location: assets/pages/user/user_dashboard.php');
-                    $_SESSION['initialized'] == false;
-                } else {
-                    header('Location: assets/pages/admin/admin_dashboard.php');
-                    $_SESSION['initialized'] == false;
-                }
-                
-                $showAlert = '';
-            } else {
-                $showAlert = 'on';
-                registrarTentativa();
-            }
-        }
-    } else {
-        echo "PASSOU TENTATIVAS";
-    }
-    
-
-    
-    
-
+    include './controllers/LoginController.php';
+    $login = new Login();
+    $login->verificarSemelhancasDados()
     ?>
     <main>
         <div class="main-header">
@@ -93,24 +22,20 @@ function registrarTentativa() {
         <div class="main-form">
             <form id="login-form" action="<?=$_SERVER['PHP_SELF']?>" method="post">
                 <label for="email">E-mail</label>
-                <input type="email" name="email" value="<?=$formUserEmailRegistered?>" required>
+                <input type="email" name="email" required>
                 <label for="password">Password</label>
                 <div class="input-container">
                     <img src="./assets/images/eyeClose.png" alt="showPassword" name="imagePassword">
-                    <input type="password" name="password" value="<?=$formUserPasswordRegistered?>" required>
+                    <input type="password" name="password" required>
                 </div>
                 <div class="main-form-links">
-                    <a href="assets/pages/passwordRecovery.php">Esqueceu sua senha?</a>
+                    <a href="views/passwordRecovery.php">Esqueceu sua senha?</a>
                 </div>
-                <div class="alert-message <?=$showAlert?>" >
+                <div class="alert-message" >
                     <p>Verifique se o email ou senha estão corretos.</p>
                 </div>
-                <div class="container-captchaba">
-                    <div class="g-recaptcha" data-sitekey="6Ld8fCUqAAAAAOiYndpCU3FOxAjvyWH5elRCeNyl"></div>
-                </div>
-                <br/>
-                <input type="submit" value="ENTRAR">
-                <p>Não tem conta? <a href="assets/pages/register.php">Criar Conta</a></p>
+                <input type="submit" value="ENTRAR" class="g-recaptcha" data-sitekey="6LcVPCYqAAAAAFzQf0v3u4C10h6RFTYOgKJYpogE" data-callback="onSubmit">
+                <p>Não tem conta? <a href="views/register.php">Criar Conta</a></p>
             </form>
         </div>
     </main>

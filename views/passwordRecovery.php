@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Remember Password</title>
-    <link rel="stylesheet" href="../css/passwordRecovery.css">
-    <script src="../js/passwordRecovery.js" defer></script>
+    <link rel="stylesheet" href="../assets/css/passwordRecovery.css">
+    <script src="../assets/js/passwordRecovery.js" defer></script>
 </head>
 <body>
 <?php
@@ -44,7 +44,7 @@ if (!isset($_SESSION['randomCod'])) {
     $_SESSION['randomCod'] = $randomCod;
 }
 
-include '../php/conexao.php';
+include '../assets/php/conexao.php';
 
 $sql = "SELECT * FROM lista_usuarios WHERE email LIKE '%$emailForm%'";
 
@@ -155,13 +155,13 @@ if ($step == 1) {
             <div class="info-form">
             <label for="password">Digite a senha: </label>
                 <div class="input-container">
-                    <img src="../images/eyeClose.png" alt="showPassword" name="imagePassword">
+                    <img src="../assets/images/eyeClose.png" alt="showPassword" name="imagePassword">
                     <input type="password" name="password" required>
                 </div>
                 
                 <label for="repeatpassword">Confirme a senha:</label>
                 <div class="input-container">
-                    <img src="../images/eyeClose.png" alt="showPassword" name="imagePassword">
+                    <img src="../assets/images/eyeClose.png" alt="showPassword" name="imagePassword">
                     <input type="password" name="repeatpassword" required>
                 </div>
                 <input type="submit" value="SALVAR">

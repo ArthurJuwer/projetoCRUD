@@ -4,15 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - Create User</title>
-    <link rel="stylesheet" href="../../css/layout.css">
-    <link rel="stylesheet" href="../../css/admin/admin_createUser.css">
+    <link rel="stylesheet" href="../../assets/css/layout.css">
+    <link rel="stylesheet" href="../../assets/css/admin/admin_createUser.css">
     <script src="https://kit.fontawesome.com/e374ba1aa3.js" crossorigin="anonymous" defer></script>
-    <script src="../../js/admin/admin_createUser.js" defer></script>
+    <script src="../../assets/js/admin/admin_createUser.js" defer></script>
 </head>
 <body>
     <?php 
     session_start();
-    include '../../php/conexao.php';
+    include '../../assets/php/conexao.php';
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Sanitizing input data
@@ -97,7 +97,12 @@
     </section>
     
     <section class="header">
-        <h1>Novo Utilizador</h1>
+        <div class="header-title">
+            <h1>Novo Utilizador</h1>
+        </div>
+        <div class="header-icons">
+            <a href="../../login.php"><i class="fa-solid fa-right-from-bracket"></i></a>
+        </div>
     </section>
     
     <section class="content">

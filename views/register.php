@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
-    <link rel="stylesheet" href="../css/register.css">
-    <script src="../js/register.js" defer></script>
+    <link rel="stylesheet" href="../assets/css/register.css">
+    <script src="../assets/js/register.js" defer></script>
 </head>
 <body>
 
     <?php 
 
-    include '../php/conexao.php';
+    include '../assets/php/conexao.php';
 
     $formUserEmail = $_POST['email'] ?? '';
     $formUserPassword = $_POST['password'] ?? '';
@@ -35,7 +35,7 @@
 
     if($passwordConfirm){
         if(mysqli_query($conn, $sql)) {
-            header('Location: ../../login.php');
+            header('Location: ../login.php');
         } else {
             $showAlert = 'on';
             $alertMessage = 'Ocorreu um erro. Usuario não cadastrado!';
@@ -64,13 +64,13 @@
 
                 <label for="password">Senha: </label>
                 <div class="input-container">
-                    <img src="../images/eyeClose.png" alt="showPassword" name="imagePassword">
+                    <img src="../assets/images/eyeClose.png" alt="showPassword" name="imagePassword">
                     <input type="password" name="password" value="<?=$formUserPassword?>" required>
                 </div>
                 
                 <label for="repeatpassword">Confirme Senha: </label>
                 <div class="input-container">
-                    <img src="../images/eyeClose.png" alt="showPassword" name="imagePassword">
+                    <img src="../assets/images/eyeClose.png" alt="showPassword" name="imagePassword">
                     <input type="password" name="repeatpassword" value="<?=$formUserRepeatPassword?>"required>
                 </div>
 

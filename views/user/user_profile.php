@@ -4,15 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User - Profile</title>
-    <link rel="stylesheet" href="../../css/layout.css">
-    <link rel="stylesheet" href="../../css/user/user_perfil.css">
+    <link rel="stylesheet" href="../../assets/css/layout.css">
+    <link rel="stylesheet" href="../../assets/css/user/user_perfil.css">
     <script src="https://kit.fontawesome.com/e374ba1aa3.js" crossorigin="anonymous" defer></script>
-    <script src="../../js/user/user_perfil.js" defer></script>
+    <script src="../../assets/js/user/user_perfil.js" defer></script>
 </head>
 <body>
     <?php 
     session_start();
-    include '../../php/conexao.php';
+    include '../../assets/php/conexao.php';
 
     // Verifica se o formulário foi enviado
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -98,7 +98,12 @@
         </nav>
     </section>
     <section class="header">
-        <h1>Meu Perfil</h1>
+        <div class="header-title">
+            <h1>Meu perfil</h1>
+        </div>
+        <div class="header-icons">
+            <a href="../../login.php"><i class="fa-solid fa-right-from-bracket"></i></a>
+        </div>
     </section>
     <section class="content">
         <h2>Mudar Informações</h2>
@@ -159,7 +164,7 @@
             <div class="row-form">
                 <label for="password">Senha: </label>
                 <div class="row-form-image">
-                    <img src="../../images/eyeOpen.png" alt="showPassword" name="imagePassword">
+                    <img src="../../assets/images/eyeOpen.png" alt="showPassword" name="imagePassword">
                     <input type="password" name="password" value="<?=$preencherInformacoesPass?>">
                 </div>
             </div>

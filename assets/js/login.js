@@ -16,6 +16,6 @@ if (changeImage && passwordInput) {
 }
 
 
-var onloadCallback = function() {
-};
-
+function onSubmit(token) {
+    document.getElementById("login-form").submit();
+  }
