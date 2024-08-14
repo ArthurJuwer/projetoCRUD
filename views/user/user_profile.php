@@ -31,7 +31,7 @@
         $estado = mysqli_real_escape_string($conn, $_POST['estado']);
         $celular = mysqli_real_escape_string($conn, $_POST['celular']);
 
-        $emailUser = $_SESSION['nome_usuario'];
+        $nomeUser = $_SESSION['nome_usuario'];
 
         // Atualiza os dados do usuário no banco de dados
         $sql = "UPDATE `lista_usuarios` SET
@@ -48,7 +48,7 @@
             `country` = '$pais',
             `state` = '$estado',
             `phone` = '$celular'
-            WHERE `email` = '$emailUser'";
+            WHERE `email` = '$nomeUser'";
 
         if (mysqli_query($conn, $sql)) {
             echo "<p>Dados atualizados com sucesso!</p>";
@@ -58,8 +58,8 @@
     }
 
     // Recupera os dados do usuário
-    $emailUser = $_SESSION['nome_usuario'];
-    $sql = "SELECT * FROM lista_usuarios WHERE email = '$emailUser'";
+    $nomeUser = $_SESSION['nome_usuario'];
+    $sql = "SELECT * FROM lista_usuarios WHERE email = '$nomeUser'";
     $dados = mysqli_query($conn, $sql);
     $linha = mysqli_fetch_assoc($dados);
 
@@ -80,15 +80,20 @@
     $preencherInformacoesCelular = $linha['phone'] ?? '';
     $preencherInformacoesEmail = $linha['email'] ?? '';
     ?>
+    
     <section class="left-menu">
         <nav>
+            <div class="logo-left-menu">
+                <h1>LOGOTIPO</h1>
+                <span class="row"></span>    
+            </div>
             <div class="title-left-menu">
                 <i class="fa-solid fa-user"></i>
                 <h3>Usuarios e Grupos</h3>
             </div>
             <h4>Usuario</h4>
             <ul> 
-                <li><a href="./user_dashboard.php">Inicio</a></li>
+                <li><a href="./user_dashboard.php">Dashboard</a></li>
                 <li><a href="./user_profile.php">Meu Perfil</a></li>
             </ul>
             <h4>Grupos</h4>
@@ -101,8 +106,10 @@
         <div class="header-title">
             <h1>Meu perfil</h1>
         </div>
-        <div class="header-icons">
-            <a href="../../login.php"><i class="fa-solid fa-right-from-bracket"></i></a>
+        <div class="header-infos">
+            <p><?=$nomeUser?></p>
+            <p>trocar perfil</p>
+            <a href="../../login.php">sair</i></a>
         </div>
     </section>
     <section class="content">
