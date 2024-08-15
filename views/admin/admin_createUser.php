@@ -13,7 +13,7 @@
     <?php 
     session_start();
 
-    $nomeUser = $_SESSION['nome_usuario'];
+    $nomeUser = $_SESSION['email_usuario'];
 
     include '../../assets/php/conexao.php';
 

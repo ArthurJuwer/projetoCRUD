@@ -9,11 +9,9 @@
 </head>
 <body>
     <?php 
-    
-    session_start();
-
-    $nomeUser = $_SESSION['nome_usuario'];
-    
+        require_once "../../controllers/UserController.php";
+        $user = new User();
+        $emailUsuario = $user->getEmailLogado();
     ?>
     <section class="left-menu">
         <nav>
@@ -42,7 +40,7 @@
             <h1>Dashboard</h1>
         </div>
         <div class="header-infos">
-            <p><?=$nomeUser?></p>
+            <p><?=$emailUsuario?></p>
             <p>trocar perfil</p>
             <a href="../../login.php">sair</i></a>
         </div>

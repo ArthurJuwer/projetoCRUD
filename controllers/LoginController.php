@@ -45,7 +45,7 @@ class Login{
         protected function redirecionarDeAcordoComTipoUsuario(){
             session_start();
 
-            $_SESSION['nome_usuario'] = $this->userEmail;
+            $_SESSION['email_usuario'] = $this->userEmail;
             if($this->userType == 'user'){
                 header('Location: views/user/user_dashboard.php');
             } else {

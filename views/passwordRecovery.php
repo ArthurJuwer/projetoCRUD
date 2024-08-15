@@ -114,7 +114,7 @@ if ($step == 1) {
 
         $_SESSION['step'] = $step;
         $_SESSION['initialized'] = false;
-        header('Location: ../../login.php');
+        header('Location: ./login.php');
         exit;
     } else {
         $showVerificationCod = '';

@@ -10,8 +10,9 @@
 </head>
 <body>
     <?php 
-    include './controllers/LoginController.php';
-    $login = new Login();
+
+    require_once './controllers/LoginController.php';
+    $login = new Login;
     $login->verificarSemelhancasDados()
     ?>
     <main>
