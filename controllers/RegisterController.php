@@ -48,22 +48,31 @@
             $this->usuarioHorarioCadastro = date('d/m/Y H:i:s');
         }
 
-        private function inserirDadosBanco(){
-
-            include '../assets/php/conexao.php';
-
+        private function inserirDadosBanco() {
+            include '../assets/php/conect.php';
+        
             $this->pegarHorarioAtual();
-
-            $sql = "INSERT INTO `lista_usuarios`
+        
+            $pdo = conectar();
+            $TABELA = 'lista_usuarios';
+        
+            $stmt = $pdo->prepare("INSERT INTO $TABELA 
             (`email`, `password`, `user_type`, `time_registered`) VALUES
-            ('$this->usuarioEmail','$this->usuarioSenha','$this->usuarioTipoPadrao','$this->usuarioHorarioCadastro')";
-
-            if(mysqli_query($conn, $sql)) {
+            (:email, :password, :user_type, :time_registered)");
+        
+            // Bind the parameters correctly
+            $stmt->bindParam(':email', $this->usuarioEmail);
+            $stmt->bindParam(':password', $this->usuarioSenha);
+            $stmt->bindParam(':user_type', $this->usuarioTipoPadrao);
+            $stmt->bindParam(':time_registered', $this->usuarioHorarioCadastro);
+        
+            if ($stmt->execute()) {
                 $this->redirecionarLogin();
             } else {
                 $this->showError();
             }
         }
+        
 
         private function showError(){
             echo "ERRO";

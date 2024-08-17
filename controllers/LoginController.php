@@ -18,16 +18,21 @@ class Login{
             $this->userPassword = $_POST['password'] ?? '';
         }
         private function receberDadosBancoDados(){
-            include './assets/php/conexao.php';
-            $sql = "SELECT * FROM lista_usuarios WHERE email LIKE '%$this->userEmail%'";
+            include './assets/php/conect.php';
 
-            if($dados = mysqli_query($conn, $sql)){
-                $linha = mysqli_fetch_assoc($dados);
-            }
+            $pdo = conectar();
 
-            $this->emailSemelhantes = $linha['email'] ?? 'valor invalido';
-            $this->passwordSemelhantes = $linha['password'] ?? 'valor invalido';
-            $this->userType = $linha['user_type'] ?? 'valor invalido';
+            $TABELA = 'lista_usuarios';
+
+            $stmt = $pdo->prepare("SELECT * FROM $TABELA WHERE email LIKE :email");
+
+            $stmt->execute( array ( 'email' => '%' . $this->userEmail . '%' ) );
+
+            $dados = $stmt->fetch();
+
+            $this->emailSemelhantes = $dados['email'] ?? 'valor invalido';
+            $this->passwordSemelhantes = $dados['password'] ?? 'valor invalido';
+            $this->userType = $dados['user_type'] ?? 'valor invalido';
 
             
             

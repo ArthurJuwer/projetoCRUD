@@ -9,21 +9,13 @@
     <script src="https://kit.fontawesome.com/e374ba1aa3.js" crossorigin="anonymous" defer></script>
 </head>
 <body>
-    <?php 
-    ## TERMINAR DE ADICIONAR AS OUTRAS SEÇÕES NO DB
-    session_start();
+<?php 
+    require_once '../../controllers/AdminController.php';
 
-    $nomeUser = $_SESSION['email_usuario'];
+    $adminReadDb = new AdminReadDataBase;
 
-    include '../../assets/php/conexao.php';
-
-    $sql = 'SELECT * FROM lista_usuarios';
-
-    $dados = mysqli_query($conn, $sql);
-
-    ?>
-
-    
+    $emailLogado = $adminReadDb->getEmailLogado();
+?>
 <section class="left-menu">
         <nav>
             <div class="logo-left-menu">
@@ -53,7 +45,7 @@
             <h1>Dashboard</h1>
         </div>
         <div class="header-infos">
-            <p><?=$nomeUser?></p>
+            <p><?=$emailLogado?></p>
             <p>trocar perfil</p>
             <a href="../../login.php">sair</i></a>
         </div>
@@ -76,30 +68,8 @@
         </tr>
     </thead>
     <tbody>
-
-        <?php
-        while($linha = mysqli_fetch_assoc($dados)) {
-            $email = $linha['email'];
-            $user_type = $linha['user_type'];
-            $sobrenome = $linha['lastName'];
-            $nome = $linha['firstName'];
-            $user_type = $linha['user_type'];
-            $supervisor = $linha['supervisor'];
-            $telefone = $linha['phone'];
-
-            echo "<tr>
-                <td>$user_type</td>
-                <td>$sobrenome</td>
-                <td>$nome</td>
-                <td>$supervisor</td>
-                <td>$telefone</td>
-                <td>$email</td>
-                <td></td>
-                <td></td>
-                <td><span class='ticket'>ATIVADO</span></td>
-            </tr>";
-        }
-        
+        <?php 
+            $adminReadDb->lerBancoDados();
         ?>
     </tbody>
 </table>

@@ -1,55 +1,47 @@
 <?php 
-    class User{
-        protected $emailLogado;
+class User {
+    protected $emailLogado;
 
-        public function __construct(){
-            $this->obterEmailUsuarioLogado();
-        }
-
-        private function obterEmailUsuarioLogado(){
-            session_start();
-
-            if (isset($_SESSION['email_usuario'])) {
-                $this->emailLogado = $_SESSION['email_usuario'];
-            } else {
-                $this->redirecionarLogin();
-                // voltar para o login caso nao tenha email
-                // MOSTRAR ALERTA DE EMAIL NAO CADADSTRADO
-            }
-        }
-        private function redirecionarLogin(){
-            header('Location: ./login.php'); 
-        }
-        public function getEmailLogado(){
-            return $this->emailLogado;
-        }
-        
-
+    public function __construct() {
+        $this->obterEmailUsuarioLogado();
     }
 
+    private function obterEmailUsuarioLogado() {
+        session_start();
+
+        if (isset($_SESSION['email_usuario'])) {
+            $this->emailLogado = $_SESSION['email_usuario'];
+        } else {
+            $this->redirecionarLogin();
+        }
+    }
+
+    private function redirecionarLogin() {
+        header('Location: ./login.php'); 
+        exit();
+    }
+
+    public function getEmailLogado() {
+        return $this->emailLogado;
+    }
+}
+
 class UserProfile extends User {
-    protected $conexao;
-    protected $dadosFormulario = [];
+    public $dadosFormulario = [];
 
     public function __construct() {
         parent::__construct(); 
         $this->recuperarDadosUsuario();
     }
 
-    private function recuperarDadosUsuario() {
-
-        include '../../assets/php/conexao.php';
-
-        $this->conexao = $conn;
-
-        $emailLogado = $this->emailLogado;
-
-        $sql = "SELECT * FROM lista_usuarios WHERE email = ?";
-        $stmt = mysqli_prepare($this->conexao, $sql);
-        mysqli_stmt_bind_param($stmt, 's', $emailLogado);
-        mysqli_stmt_execute($stmt);
-        $result = mysqli_stmt_get_result($stmt);
-        $linha = mysqli_fetch_assoc($result);
+    public function recuperarDadosUsuario(){
+        include '../../assets/php/conect.php';
+        $pdo = conectar();
+        $TABELA = 'lista_usuarios';
+        $stmt = $pdo->prepare("SELECT * FROM $TABELA WHERE email = :email");
+        $stmt->bindParam(':email', $this->emailLogado);
+        $stmt->execute();
+        $linha = $stmt->fetch(PDO::FETCH_ASSOC);
 
         $this->dadosFormulario = [
             'firstName' => $linha['firstName'] ?? '',
@@ -72,62 +64,58 @@ class UserProfile extends User {
     }
 
     public function obterDadosFormulario() {
-        $this->dadosFormulario['position'] = mysqli_real_escape_string($this->conexao, $_POST['cargo']);
-        $this->dadosFormulario['firstName'] = mysqli_real_escape_string($this->conexao, $_POST['primeiroNome']);
-        $this->dadosFormulario['lastName'] = mysqli_real_escape_string($this->conexao, $_POST['sobrenome']);
-        $this->dadosFormulario['gender'] = mysqli_real_escape_string($this->conexao, $_POST['genero']);
-        $this->dadosFormulario['isEmployee'] = mysqli_real_escape_string($this->conexao, $_POST['funcionario']);
-        $this->dadosFormulario['supervisor'] = mysqli_real_escape_string($this->conexao, $_POST['supervisor']);
-        $this->dadosFormulario['password'] = mysqli_real_escape_string($this->conexao, $_POST['password']);
-        $this->dadosFormulario['address'] = mysqli_real_escape_string($this->conexao, $_POST['endereco']);
-        $this->dadosFormulario['zipCode'] = mysqli_real_escape_string($this->conexao, $_POST['cep']);
-        $this->dadosFormulario['city'] = mysqli_real_escape_string($this->conexao, $_POST['municipio']);
-        $this->dadosFormulario['country'] = mysqli_real_escape_string($this->conexao, $_POST['pais']);
-        $this->dadosFormulario['state'] = mysqli_real_escape_string($this->conexao, $_POST['estado']);
-        $this->dadosFormulario['phone'] = mysqli_real_escape_string($this->conexao, $_POST['celular']);
+        $this->dadosFormulario['position'] = $_POST['cargo'] ?? '';
+        $this->dadosFormulario['firstName'] = $_POST['primeiroNome'] ?? '';
+        $this->dadosFormulario['lastName'] = $_POST['sobrenome'] ?? '';
+        $this->dadosFormulario['gender'] = $_POST['genero'] ?? '';
+        $this->dadosFormulario['isEmployee'] = $_POST['funcionario'] ?? '';
+        $this->dadosFormulario['supervisor'] = $_POST['supervisor'] ?? '';
+        $this->dadosFormulario['password'] = $_POST['password'] ?? '';
+        $this->dadosFormulario['address'] = $_POST['endereco'] ?? '';
+        $this->dadosFormulario['zipCode'] = $_POST['cep'] ?? '';
+        $this->dadosFormulario['city'] = $_POST['municipio'] ?? '';
+        $this->dadosFormulario['country'] = $_POST['pais'] ?? '';
+        $this->dadosFormulario['state'] = $_POST['estado'] ?? '';
+        $this->dadosFormulario['phone'] = $_POST['celular'] ?? '';
     }
 
     public function atualizarBancoDados() {
-        $sql = "UPDATE lista_usuarios SET
-            position = ?,
-            firstName = ?,
-            lastName = ?,
-            gender = ?,
-            isEmployee = ?,
-            supervisor = ?,
-            password = ?,
-            address = ?,
-            zipCode = ?,
-            city = ?,
-            country = ?,
-            state = ?,
-            phone = ?
-            WHERE email = ?";
+        $pdo = conectar();
+        $stmt = $pdo->prepare("UPDATE lista_usuarios SET
+            position = :position,
+            firstName = :firstName,
+            lastName = :lastName,
+            gender = :gender,
+            isEmployee = :isEmployee,
+            supervisor = :supervisor,
+            password = :password,
+            address = :address,
+            zipCode = :zipCode,
+            city = :city,
+            country = :country,
+            state = :state,
+            phone = :phone
+            WHERE email = :email");
+        $stmt->bindParam(':position', $this->dadosFormulario['position']);
+        $stmt->bindParam(':firstName', $this->dadosFormulario['firstName']);
+        $stmt->bindParam(':lastName', $this->dadosFormulario['lastName']);
+        $stmt->bindParam(':gender', $this->dadosFormulario['gender']);
+        $stmt->bindParam(':isEmployee', $this->dadosFormulario['isEmployee']);
+        $stmt->bindParam(':supervisor', $this->dadosFormulario['supervisor']);
+        $stmt->bindParam(':password', $this->dadosFormulario['password']);
+        $stmt->bindParam(':address', $this->dadosFormulario['address']);
+        $stmt->bindParam(':zipCode', $this->dadosFormulario['zipCode']);
+        $stmt->bindParam(':city', $this->dadosFormulario['city']);
+        $stmt->bindParam(':country', $this->dadosFormulario['country']);
+        $stmt->bindParam(':state', $this->dadosFormulario['state']);
+        $stmt->bindParam(':phone', $this->dadosFormulario['phone']);
+        $stmt->bindParam(':email', $this->dadosFormulario['email']);
 
-        $stmt = mysqli_prepare($this->conexao, $sql);
-        mysqli_stmt_bind_param($stmt, 'ssssssssssssss',
-            $this->dadosFormulario['position'],
-            $this->dadosFormulario['firstName'],
-            $this->dadosFormulario['lastName'],
-            $this->dadosFormulario['gender'],
-            $this->dadosFormulario['isEmployee'],
-            $this->dadosFormulario['supervisor'],
-            $this->dadosFormulario['password'],
-            $this->dadosFormulario['address'],
-            $this->dadosFormulario['zipCode'],
-            $this->dadosFormulario['city'],
-            $this->dadosFormulario['country'],
-            $this->dadosFormulario['state'],
-            $this->dadosFormulario['phone'],
-            $this->dadosFormulario['email']
-        );
-
-        if (mysqli_stmt_execute($stmt)) {
+        if ($stmt->execute()) {
             echo "<p>Dados atualizados com sucesso!</p>";
         } else {
-            echo "<p>Erro: " . mysqli_error($this->conexao) . "</p>";
+            echo "<p>Erro ao atualizar dados.</p>";
         }
     }
 }
-
 ?>

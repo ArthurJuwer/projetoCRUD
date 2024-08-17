@@ -11,75 +11,16 @@
 </head>
 <body>
     <?php 
-    session_start();
+        require_once "../../controllers/AdminController.php";
 
-    $nomeUser = $_SESSION['email_usuario'];
+        $adminCreateUser = new AdminCreateUser;
+        $emailLogado = $adminCreateUser->getEmailLogado();
 
-    include '../../assets/php/conexao.php';
-
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        // Sanitizing input data
-        $cargo = mysqli_real_escape_string($conn, $_POST['cargo']);
-        $primeiroNome = mysqli_real_escape_string($conn, $_POST['primeiroNome']);
-        $sobrenome = mysqli_real_escape_string($conn, $_POST['sobrenome']);
-        $genero = mysqli_real_escape_string($conn, $_POST['genero']);
-        $funcionario = mysqli_real_escape_string($conn, $_POST['funcionario']);
-        $supervisor = mysqli_real_escape_string($conn, $_POST['supervisor']);
-        $password = mysqli_real_escape_string($conn, $_POST['password']);
-        $endereco = mysqli_real_escape_string($conn, $_POST['endereco']);
-        $cep = mysqli_real_escape_string($conn, $_POST['cep']);
-        $municipio = mysqli_real_escape_string($conn, $_POST['municipio']);
-        $pais = mysqli_real_escape_string($conn, $_POST['pais']);
-        $estado = mysqli_real_escape_string($conn, $_POST['estado']);
-        $celular = mysqli_real_escape_string($conn, $_POST['celular']);
-        $email = mysqli_real_escape_string($conn, $_POST['email']);
-
-        date_default_timezone_set('America/Sao_Paulo');
-        $userTimeRegistered =   date('d/m/Y H:i:s');
-
-        // SQL Insert Statement
-        $sql = "INSERT INTO `lista_usuarios` (
-            `email`,
-            `position`,
-            `firstName`,
-            `lastName`,
-            `gender`,
-            `isEmployee`,
-            `supervisor`,
-            `password`,
-            `address`,
-            `zipCode`,
-            `city`,
-            `country`,
-            `state`,
-            `phone`
-            `time_registered`
-        ) VALUES (
-            '$email',
-            '$cargo',
-            '$primeiroNome',
-            '$sobrenome',
-            '$genero',
-            '$funcionario',
-            '$supervisor',
-            '$password',
-            '$endereco',
-            '$cep',
-            '$municipio',
-            '$pais',
-            '$estado',
-            '$celular'
-            '$userTimeRegistered'
-        )";
-
-        if (mysqli_query($conn, $sql)) {
-            echo "<p>Dados criados com sucesso!</p>";
-        } else {
-            echo "<p>Erro: " . mysqli_error($conn) . "</p>";
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $adminCreateUser->pegarDadosFormulario();
+            $adminCreateUser->criarUserNoBancoDados();
         }
-    }
     ?>
-    
     <section class="left-menu">
         <nav>
             <div class="logo-left-menu">
@@ -109,7 +50,7 @@
             <h1>Dashboard</h1>
         </div>
         <div class="header-infos">
-            <p><?=$nomeUser?></p>
+            <p><?=$emailLogado?></p>
             <p>trocar perfil</p>
             <a href="../../login.php">sair</i></a>
         </div>
