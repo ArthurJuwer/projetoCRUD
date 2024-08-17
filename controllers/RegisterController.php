@@ -4,7 +4,9 @@
         protected $usuarioSenha;
         protected $usuarioSenhaConfirmacao;
         protected $usuarioHorarioCadastro;
-        protected $usuarioTipoPadrao = 'user';   
+        protected $usuarioTipoPadrao = 'user'; 
+        protected $showError;
+        protected $messageError;
 
         public function __construct()
         {
@@ -31,7 +33,9 @@
             if($confirmarSenha){
                 $this->inserirDadosBanco();
             } else {
-                $this->showError();
+                $this->showError = 'on';
+                $this->messageError = 'Erro! Verifique se as senhas são indênticas';
+                $this->mostrarErro();
             }
         }
 
@@ -60,7 +64,6 @@
             (`email`, `password`, `user_type`, `time_registered`) VALUES
             (:email, :password, :user_type, :time_registered)");
         
-            // Bind the parameters correctly
             $stmt->bindParam(':email', $this->usuarioEmail);
             $stmt->bindParam(':password', $this->usuarioSenha);
             $stmt->bindParam(':user_type', $this->usuarioTipoPadrao);
@@ -69,14 +72,15 @@
             if ($stmt->execute()) {
                 $this->redirecionarLogin();
             } else {
-                $this->showError();
+                $this->mostrarErro();
+                $this->showError = 'on';
+                $this->messageError = 'Erro! não foi possivel inserir no Banco de Dados';
             }
         }
         
-
-        private function showError(){
-            echo "ERRO";
+        public function mostrarErro(){
+            $showPopUp = [$this->showError, $this->messageError];
+            return $showPopUp;
         }
     }
-
 ?>

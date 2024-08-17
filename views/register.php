@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,8 +12,10 @@
     
     require_once "../controllers/RegisterController.php";
 
+    $mostrarErro = ['',''];
     if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         $register = new Register();
+        $mostrarErro = $register->mostrarErro();
     }    
 
     ?>
@@ -46,8 +48,8 @@
                     <input type="checkbox" name="checkbox" required>
                     <p>Concordo com os <a href="">Termos de Uso</a> e <a href="">Política de Privacidade.</a></p>
                 </div>
-                <div class="alert-message" >
-                    <p></p>
+                <div class="alert-message <?=$mostrarErro[0]?>" >
+                    <p><?=$mostrarErro[1]?></p>
                 </div>
                 <input type="submit" value="CRIAR CONTA">
             </form>

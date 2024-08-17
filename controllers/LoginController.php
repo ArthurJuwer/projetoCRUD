@@ -5,6 +5,8 @@ class Login{
         protected $emailSemelhantes ;
         protected $passwordSemelhantes ;
         protected $userType;
+        protected $messageError;
+        protected $showError;
 
         public function __construct(){
         // Este método será chamado quando a instância for criada
@@ -44,6 +46,8 @@ class Login{
                 $this->redirecionarDeAcordoComTipoUsuario();
             } else {
                 $this->mostrarErro();
+                $this->messageError = 'Erro! Verfique se os dados estão certos.';
+                $this->showError = 'on';
             }
             
         }
@@ -57,9 +61,9 @@ class Login{
                 header('Location: views/admin/admin_dashboard.php');
             }
         }
-        protected function mostrarErro(){
-            // $showAlert = 'on';
-            echo "definir depois. ERRO";
+        public function mostrarErro(){
+            $showPopUp = [$this->showError, $this->messageError];
+            return $showPopUp;
             
         }
     }

@@ -1,5 +1,4 @@
 <?php 
-
 class Admin{
     protected $emailUser; 
 
@@ -67,7 +66,6 @@ class AdminReadDataBase extends Admin{
         }
     }
 }
-
 class AdminCreateUser extends Admin{
     protected $cargo;
     protected $primeiroNome;
@@ -175,7 +173,5 @@ class AdminCreateUser extends Admin{
             echo "Erro";
         }
     }
-    
 }
-
 ?>

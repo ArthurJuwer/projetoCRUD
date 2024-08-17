@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,7 +13,12 @@
 
     require_once './controllers/LoginController.php';
     $login = new Login;
-    $login->verificarSemelhancasDados()
+    
+    $mostrarErro = ['',''];
+    if($_SERVER['REQUEST_METHOD'] == 'POST'){
+        $login->verificarSemelhancasDados();
+        $mostrarErro = $login->mostrarErro();
+    }
     ?>
     <main>
         <div class="main-header">
@@ -32,8 +37,8 @@
                 <div class="main-form-links">
                     <a href="views/passwordRecovery.php">Esqueceu sua senha?</a>
                 </div>
-                <div class="alert-message" >
-                    <p>Verifique se o email ou senha estão corretos.</p>
+                <div class="alert-message <?=$mostrarErro[0]?>" >
+                    <p><?=$mostrarErro[1]?></p>
                 </div>
                 <input type="submit" value="ENTRAR" class="g-recaptcha" data-sitekey="6LcVPCYqAAAAAFzQf0v3u4C10h6RFTYOgKJYpogE" data-callback="onSubmit">
                 <p>Não tem conta? <a href="views/register.php">Criar Conta</a></p>

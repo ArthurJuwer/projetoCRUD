@@ -1,6 +1,8 @@
 <?php 
 class User {
     protected $emailLogado;
+    protected $mostrarPop;
+    protected $mensagemPop;
 
     public function __construct() {
         $this->obterEmailUsuarioLogado();
@@ -113,9 +115,19 @@ class UserProfile extends User {
 
         if ($stmt->execute()) {
             echo "<p>Dados atualizados com sucesso!</p>";
+            // mostrarPopup()
+            // $mostrarPop = 'on'
+            // $mensagemPop = 'Dados atualizados com sucesso!'
         } else {
             echo "<p>Erro ao atualizar dados.</p>";
+            // mostrarPopup()
+            // $mostrarPop = 'on'
+            // $mensagemPop = 'Erro ao atualizar dados.'
         }
+    }
+    public function mostrarPopup(){
+        // $showPopUp = [$this->mostrarPop, $this->mensagemPop];
+        // return $showPopUp;
     }
 }
 ?>

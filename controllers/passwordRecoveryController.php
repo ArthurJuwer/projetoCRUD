@@ -1,6 +1,5 @@
 <?php
 require_once '../assets/php/conect.php';
-
 class PasswordRecovery {
     private $emailFormulario;
     private $codigoFormulario;
