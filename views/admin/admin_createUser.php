@@ -11,6 +11,7 @@
 </head>
 <body>
     <?php 
+        $showPopUp = ['','','']; 
         require_once "../../controllers/AdminController.php";
 
         $adminCreateUser = new AdminCreateUser;
@@ -19,6 +20,7 @@
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
             $adminCreateUser->pegarDadosFormulario();
             $adminCreateUser->criarUserNoBancoDados();
+            $showPopUp = $adminCreateUser->mostrarPopup();
         }
     ?>
     <section class="left-menu">
@@ -134,6 +136,9 @@
             </div>
             <div class="end-form">
                 <input type="submit" value="Criar Usuário">
+            </div>
+            <div class="alert-message <?=$showPopUp[0]?> <?=$showPopUp[1]?>" >
+                <p><?=$showPopUp[2]?></p>
             </div>
         </form>
     </section>

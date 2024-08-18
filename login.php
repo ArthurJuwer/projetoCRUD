@@ -10,7 +10,9 @@
 </head>
 <body>
     <?php 
-
+    ## fazer um popup para quando o cliente cadastrar um nova conta e ser redirencionada para ca,
+    ## quando ele alterar a senha e para quando ele for redirecionado por tentar entrar admin,user sem estar logado
+    
     require_once './controllers/LoginController.php';
     $login = new Login;
     

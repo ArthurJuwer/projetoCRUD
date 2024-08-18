@@ -10,14 +10,18 @@
     <script src="../../assets/js/user/user_perfil.js" defer></script>
 </head>
 <body>
-    <?php 
+    <?php
+        $showPopUp = ['','','']; 
         require_once "../../controllers/UserController.php";
+
+
         $userProfile = new UserProfile;
         $emailUsuario = $userProfile->getEmailLogado();
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST'){
             $userProfile->obterDadosFormulario();
             $userProfile->atualizarBancoDados();
+            $showPopUp = $userProfile->mostrarPopup();
         } 
     ?>
     <section class="left-menu">
@@ -70,7 +74,7 @@
                 <label for="isAdmin">Administrador do sistema: </label>
                 <div class="row-form-icon">
                     <i class="fa-solid fa-user"></i>
-                    <input type="text" name="isAdmin" value="<?=htmlspecialchars($userProfile->dadosFormulario['user_type'])?>" disabled>
+                    <input type="text" name="isAdmin" value="<?=htmlspecialchars($userProfile->dadosFormulario['user_type'] == 'User' ? 'Não' : 'Sim')?>" disabled>
                 </div>
             </div>
             <div class="row-form">
@@ -104,7 +108,7 @@
             </div>
             <div class="row-form">
                 <label for="Nome">Usuário Externo? </label>
-                <p><?= $userProfile->dadosFormulario['user_extern'] == '1' ? 'Externo' : 'Interno' ?></p>
+                <input type="text" name="user_extern" value="<?= $userProfile->dadosFormulario['user_extern']?>" disabled>
             </div>
             <hr>
             <div class="row-form">
@@ -157,6 +161,9 @@
             </div>
             <div class="end-form">
                 <input type="submit" value="Atualizar">
+            </div>
+            <div class="alert-message <?=$showPopUp[0]?> <?=$showPopUp[1]?>" >
+                <p><?=$showPopUp[2]?></p>
             </div>
         </form>
     </section>

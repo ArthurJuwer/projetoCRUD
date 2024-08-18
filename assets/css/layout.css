@@ -93,6 +93,7 @@ body{
 }
 
 .content {
+    position: relative;
     background: #F4F6F9;
     padding: 2rem;
     grid-column: 2 / 4;
@@ -101,4 +102,25 @@ body{
     h2{
         color: #333;
     }
+}
+.alert-message {
+    position: absolute;
+    top: 2rem;
+    right: 1.6rem;
+    display: none;
+    border-radius: 1rem;
+    margin: 0.5rem 0;
+    width: 28rem;
+    text-align: center;
+    padding: 1rem;
+    color: #fff;
+}
+.on{
+    display: block !important;
+}
+.green{
+    background: green;
+}
+.red{
+    background: red;
 }
