@@ -6,6 +6,7 @@
             protected $emailSemelhantes ;
             protected $passwordSemelhantes ;
             protected $userType;
+            protected $ultimoLogin;
             protected $messageError;
             protected $showError;
             protected $mostrarAlerta;
@@ -66,11 +67,19 @@
                 session_start();
 
                 $_SESSION['email_usuario'] = $this->userEmail;
+                $this->registrarLogin();
                 if($this->userType == 'User'){
                     header('Location: views/user/user_dashboard.php');
                 } else {
                     header('Location: views/admin/admin_dashboard.php');
                 }
+            }
+            private function registrarLogin(){
+                $pdo = conectar();
+                $TABELA = 'lista_usuarios';
+
+                $stmt = $pdo->prepare("UPDATE $TABELA SET `lastLogin` = NOW() WHERE email = :email");
+                $stmt->execute(['email' => $this->userEmail]);
             }
             public function mostrarErro(){
                 $showPopUp = [$this->showError, $this->messageError];

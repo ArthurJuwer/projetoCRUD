@@ -56,6 +56,7 @@
                 'firstName' => $linha['firstName'] ?? '',
                 'lastName' => $linha['lastName'] ?? '',
                 'position' => $linha['position'] ?? '',
+                'company' => $linha['company'] ?? '',
                 'user_type' => $linha['user_type'] ?? '',
                 'gender' => $linha['gender'] ?? '',
                 'isEmployee' => $linha['isEmployee'] ?? '',
@@ -73,13 +74,13 @@
         }
 
         public function obterDadosFormulario() {
+            $this->dadosFormulario['company'] = $_POST['empresa'] ?? '';
             $this->dadosFormulario['position'] = $_POST['cargo'] ?? '';
             $this->dadosFormulario['firstName'] = $_POST['primeiroNome'] ?? '';
             $this->dadosFormulario['lastName'] = $_POST['sobrenome'] ?? '';
             $this->dadosFormulario['gender'] = $_POST['genero'] ?? '';
             $this->dadosFormulario['isEmployee'] = $_POST['funcionario'] ?? '';
             $this->dadosFormulario['supervisor'] = $_POST['supervisor'] ?? '';
-            $this->dadosFormulario['user_extern'] = $_POST['user_extern'] ?? '';
             $this->dadosFormulario['password'] = $_POST['password'] ?? '';
             $this->dadosFormulario['address'] = $_POST['endereco'] ?? '';
             $this->dadosFormulario['zipCode'] = $_POST['cep'] ?? '';
@@ -92,6 +93,7 @@
         public function atualizarBancoDados() {
             $pdo = conectar();
             $stmt = $pdo->prepare("UPDATE lista_usuarios SET
+                company = :company,
                 position = :position,
                 firstName = :firstName,
                 lastName = :lastName,
@@ -107,6 +109,7 @@
                 state = :state,
                 phone = :phone
                 WHERE email = :email");
+            $stmt->bindParam(':company', $this->dadosFormulario['company']);
             $stmt->bindParam(':position', $this->dadosFormulario['position']);
             $stmt->bindParam(':firstName', $this->dadosFormulario['firstName']);
             $stmt->bindParam(':lastName', $this->dadosFormulario['lastName']);

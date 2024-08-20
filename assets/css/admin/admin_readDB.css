@@ -36,5 +36,15 @@ h2 {
     color: #fff;
     font-size: 0.725rem;
     background: #4CAF50;
+}
+.actions{
+    display: flex;
+    column-gap: 0.8rem;
 
+    button{
+        font-size: 1rem;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+    }
 }

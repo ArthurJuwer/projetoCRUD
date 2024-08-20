@@ -20,6 +20,7 @@ form{
     }
     input{
         padding-left: 0.225rem;
+        
     }
     input, select{
         
@@ -27,6 +28,7 @@ form{
         border: none;
         outline: none;
         border-bottom: 0.1rem solid #9c9c9c;
+        background: #F4F6F9;
     }
     input:focus{
         border-bottom: 0.1rem solid #333;

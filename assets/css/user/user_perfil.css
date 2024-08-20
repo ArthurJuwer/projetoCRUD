@@ -27,6 +27,7 @@ form{
         border: none;
         outline: none;
         border-bottom: 0.1rem solid #9c9c9c;
+        background: #F4F6F9;
     }
     input:focus{
         border-bottom: 0.1rem solid #333;
@@ -46,6 +47,7 @@ form{
         border: 0.1rem solid #9c9c9c;
         height: 3.6rem;
         width: 50%;
+        background: #F4F6F9;
     }
 }
 hr{

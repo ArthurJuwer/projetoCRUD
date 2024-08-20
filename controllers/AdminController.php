@@ -71,6 +71,8 @@ require_once '../../assets/php/conect.php';
                 $user_type = $key['user_type'];
                 $supervisor = $key['supervisor'];
                 $telefone = $key['phone'];
+                $empresa = $key['company'];
+                $ultimoLogin = $key['lastLogin'];
                 echo "<tr>
                     <td>$user_type</td>
                     <td>$sobrenome</td>
@@ -78,21 +80,44 @@ require_once '../../assets/php/conect.php';
                     <td>$supervisor</td>
                     <td>$telefone</td>
                     <td>$email</td>
-                    <td></td>
-                    <td></td>
+                    <td>$empresa</td>
+                    <td>$ultimoLogin</td>
                     <td><span class='ticket'>ATIVADO</span></td>
+                    <td class='actions'>
+                        <form method='post' action=''>
+                            <input type='hidden' name='action' value='editar'>
+                            <button type='submit'>
+                                <i class='fa-solid fa-pen-to-square'></i>
+                            </button>
+                        </form>
+                        <form method='post' action=''
+                            <input type='hidden' name='action' value='deletar'>
+                            <button type='submit'>
+                                <i class='fa-solid fa-user-slash'></i>
+                            </button>
+                        </form>
+                        <form method='post' action=''>
+                            <input type='hidden' name='action' value='remover'>
+                            <button type='submit'>
+                                <i class='fa-solid fa-trash'></i>
+                            </button>
+                        </form>
+                    </td>
+                    
                 </tr>";
             }
         }
     }
     class AdminCreateUser extends Admin{
         protected $cargo;
+        protected $empresa;
         protected $primeiroNome;
         protected $sobrenome;
         protected $genero;
         protected $funcionario;
         protected $supervisor;
         protected $usuarioExterno = 'Externo';
+        protected $usuarioTipo;
         protected $password;
         protected $endereco;
         protected $cep;
@@ -101,7 +126,7 @@ require_once '../../assets/php/conect.php';
         protected $estado;
         protected $celular;
         protected $email;
-        protected $userTimeRegistered;
+        protected $usuarioHorarioCadastro;
         
         
         public function __construct(){
@@ -109,11 +134,13 @@ require_once '../../assets/php/conect.php';
         }
         public function pegarDadosFormulario(){
             $this->cargo = $_POST['cargo'];
+            $this->empresa = $_POST['empresa'];
             $this->primeiroNome = $_POST['primeiroNome'];
             $this->sobrenome = $_POST['sobrenome'];
             $this->genero = $_POST['genero'];
             $this->funcionario = $_POST['funcionario'];
             $this->supervisor = $_POST['supervisor'];
+            $this->usuarioTipo = $_POST['user_type'];
             $this->password = $_POST['password'];
             $this->endereco = $_POST['endereco'];
             $this->cep = $_POST['cep'];
@@ -126,7 +153,7 @@ require_once '../../assets/php/conect.php';
 
         private function pegarHorarioAtual(){
             date_default_timezone_set('America/Sao_Paulo');
-            $this->userTimeRegistered = date('d/m/Y H:i:s');
+            $this->usuarioHorarioCadastro = date('Y-m-d H:i:s');
         }
 
         public function criarUserNoBancoDados(){
@@ -139,11 +166,13 @@ require_once '../../assets/php/conect.php';
             $stmt = $pdo->prepare("INSERT INTO $TABELA (
                 `email`,
                 `position`,
+                `company`,
                 `firstName`,
                 `lastName`,
                 `gender`,
                 `isEmployee`,
                 `supervisor`,
+                `user_type`,
                 `user_extern`,
                 `password`,
                 `address`,
@@ -156,11 +185,13 @@ require_once '../../assets/php/conect.php';
             ) VALUES (
                 :email,
                 :position,
+                :company,
                 :firstName,
                 :lastName,
                 :gender,
                 :isEmployee,
                 :supervisor,
+                :user_type,
                 :user_extern,
                 :password,
                 :address,
@@ -174,11 +205,13 @@ require_once '../../assets/php/conect.php';
             )");
             $stmt->bindParam(':email', $this->email);
             $stmt->bindParam(':position', $this->cargo);
+            $stmt->bindParam(':company', $this->empresa);
             $stmt->bindParam(':firstName', $this->primeiroNome);
             $stmt->bindParam(':lastName', $this->sobrenome);
             $stmt->bindParam(':gender', $this->genero);
             $stmt->bindParam(':isEmployee', $this->funcionario);
             $stmt->bindParam(':supervisor', $this->supervisor);
+            $stmt->bindParam(':user_type', $this->usuarioTipo);
             $stmt->bindParam(':user_extern', $this->usuarioExterno);
             $stmt->bindParam(':password', $this->password);
             $stmt->bindParam(':address', $this->endereco);
@@ -187,7 +220,7 @@ require_once '../../assets/php/conect.php';
             $stmt->bindParam(':country', $this->pais);
             $stmt->bindParam(':state', $this->estado);
             $stmt->bindParam(':phone', $this->celular);
-            $stmt->bindParam(':time_registered', $this->userTimeRegistered);
+            $stmt->bindParam(':time_registered', $this->usuarioHorarioCadastro);
 
             if ($stmt->execute()) {
                 $this->mostrarPop = 'on';

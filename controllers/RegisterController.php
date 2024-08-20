@@ -79,7 +79,7 @@
         
         private function pegarHorarioAtual(){
             date_default_timezone_set('America/Sao_Paulo');
-            $this->usuarioHorarioCadastro = date('d/m/Y H:i:s');
+            $this->usuarioHorarioCadastro = date('Y-m-d H:i:s');
         }
 
         private function inserirDadosBanco() {        

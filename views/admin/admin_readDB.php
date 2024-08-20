@@ -65,6 +65,7 @@
             <th>Empresa</th>
             <th>Ultimo login</th>
             <th>Estado</th>
+            <th>Ações</th>
         </tr>
     </thead>
     <tbody>

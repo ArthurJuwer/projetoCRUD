@@ -58,6 +58,10 @@
     <section class="content">
         <h2>Mudar Informações</h2>
         <form action="<?=$_SERVER['PHP_SELF']?>" method="post">
+        <div class="row-form">
+                <label for="empresa">Empresa: </label>
+                <input type="text" name="empresa" value="<?=htmlspecialchars($userProfile->dadosFormulario['company'])?>">
+            </div>
             <div class="row-form">
                 <label for="cargo">Cargo: </label>
                 <input type="text" name="cargo" value="<?=htmlspecialchars($userProfile->dadosFormulario['position'])?>">
@@ -95,20 +99,20 @@
             <div class="row-form">
                 <label for="supervisor">Supervisor: </label>
                 <select name="supervisor">
-                    <option value="nao definido" <?= $userProfile->dadosFormulario['supervisor'] == 'nao definido' ? 'selected' : '' ?>>Não Definido</option>
+                    <option value="nao definido" <?= $userProfile->dadosFormulario['supervisor'] == 'Não definido' ? 'selected' : '' ?>>Não Definido</option>
                     <optgroup label="Grupo 1">
-                        <option value="arthur" <?= $userProfile->dadosFormulario['supervisor'] == 'arthur' ? 'selected' : '' ?>>Arthur</option>
-                        <option value="rodrigo" <?= $userProfile->dadosFormulario['supervisor'] == 'rodrigo' ? 'selected' : '' ?>>Rodrigo</option>
+                        <option value="arthur" <?= $userProfile->dadosFormulario['supervisor'] == 'Arthur' ? 'selected' : '' ?>>Arthur</option>
+                        <option value="rodrigo" <?= $userProfile->dadosFormulario['supervisor'] == 'Rodrigo' ? 'selected' : '' ?>>Rodrigo</option>
                     </optgroup>
                     <optgroup label="Grupo 2">
-                        <option value="leonardo" <?= $userProfile->dadosFormulario['supervisor'] == 'leonardo' ? 'selected' : '' ?>>Leonardo</option>
-                        <option value="eduardo" <?= $userProfile->dadosFormulario['supervisor'] == 'eduardo' ? 'selected' : '' ?>>Eduardo</option>
+                        <option value="leonardo" <?= $userProfile->dadosFormulario['supervisor'] == 'Leonardo' ? 'selected' : '' ?>>Leonardo</option>
+                        <option value="eduardo" <?= $userProfile->dadosFormulario['supervisor'] == 'Eduardo' ? 'selected' : '' ?>>Eduardo</option>
                     </optgroup> 
                 </select>
             </div>
             <div class="row-form">
-                <label for="Nome">Usuário Externo? </label>
-                <input type="text" name="user_extern" value="<?= $userProfile->dadosFormulario['user_extern']?>" disabled>
+                <label for="user_extern">Usuário Externo? </label>
+                <input type="text" name="user_extern" value="<?=htmlspecialchars($userProfile->dadosFormulario['user_extern'] == 'Interno' ? 'Interno' : 'Admin')?>" disabled>
             </div>
             <hr>
             <div class="row-form">

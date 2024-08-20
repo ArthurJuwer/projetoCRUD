@@ -61,6 +61,10 @@
     <section class="content">
         <h2>Criar Novo Usuário</h2>
         <form action="<?= $_SERVER['PHP_SELF'] ?>" method="post">
+        <div class="row-form">
+                <label for="empresa">Empresa: </label>
+                <input type="text" name="empresa" required>
+            </div>
             <div class="row-form">
                 <label for="cargo">Cargo: </label>
                 <input type="text" name="cargo" required>
@@ -100,6 +104,13 @@
                         <option value="leonardo">Leonardo</option>
                         <option value="eduardo">Eduardo</option>
                     </optgroup> 
+                </select>
+            </div>
+            <div class="row-form">
+                <label for="user_type">Tipo de Usuario: </label>
+                <select name="user_type" required>
+                    <option value="User">User</option>
+                    <option value="Admin">Admin</option>
                 </select>
             </div>
             <div class="row-form">
