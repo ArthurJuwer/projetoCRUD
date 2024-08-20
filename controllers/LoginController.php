@@ -8,10 +8,27 @@
             protected $userType;
             protected $messageError;
             protected $showError;
+            protected $mostrarAlerta;
 
             public function __construct(){
                 $this->receberDadosFormulario();
                 $this->receberDadosBancoDados();
+                $this->resetarTempoAlerta();
+            }
+
+            public function resetarTempoAlerta(){
+                if (isset($_GET['recarregar']) && $_GET['recarregar'] == 1) {
+                    echo '<script>
+                        setTimeout(function() {
+                            window.location.reload();
+                        }, 5000); // Recarrega a página após 5 segundos
+                    </script>';
+                    $this->resetarVariaveisAlerta();
+                }
+            }
+            private function resetarVariaveisAlerta(){
+                unset($_SESSION['mostrar_alerta']);
+                unset($_SESSION['mensagem_alerta']);
             }
 
             private function receberDadosFormulario(){

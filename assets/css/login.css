@@ -5,6 +5,7 @@
     font-family: 'inter';
 }
 main{
+    position: relative;
     height: 100vh;
     display: flex;
     justify-content: center;
@@ -22,9 +23,6 @@ main{
     font-weight: 600;
     font-size: 1.3rem;
     }
-
-    
-
 }
 .main-form{
 
@@ -77,8 +75,8 @@ main{
     transform: translateY(-50%);
     color: #aaa;
 }
-  
-.alert-message {
+
+div.alert-message, .alerta {
     display: none;
     p{
         margin: 0.5rem 0;
@@ -88,6 +86,20 @@ main{
         padding: 1rem;
         background: #c32e2e;
         color: #fff;
+    }
+}
+div.alerta{
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+
+    p{
+        background: #30aa0c;
+    }
+}
+div.alerta.red{
+    p{
+        background: #c32e2e !important;
     }
 }
 .on{

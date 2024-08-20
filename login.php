@@ -10,20 +10,35 @@
 </head>
 <body>
     <?php 
-    ## fazer um popup para quando o cliente cadastrar um nova conta e ser redirencionada para ca,
-    ## quando ele alterar a senha e para quando ele for redirecionado por tentar entrar admin,user sem estar logado
-    
+    session_start();
+
+    $temAlerta = isset($_SESSION['mostrar_alerta']) ? $_SESSION['mostrar_alerta'] : '';
+    $mensagemAlerta = isset($_SESSION['mensagem_alerta']) ? $_SESSION['mensagem_alerta'] : '';
+
+    if ($temAlerta) {
+        unset($_SESSION['mostrar_alerta']);
+        unset($_SESSION['mensagem_alerta']);
+    }
+
     require_once './controllers/LoginController.php';
-    $login = new Login;
-    
-    $mostrarErro = ['',''];
-    if($_SERVER['REQUEST_METHOD'] == 'POST'){
+    $login = new Login();
+
+    $mostrarErro = ['', ''];
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $login->verificarSemelhancasDados();
         $mostrarErro = $login->mostrarErro();
     }
     ?>
     <main>
         <div class="main-header">
+            <?php 
+                $classAlerta = $temAlerta == 'red on' ? 'alerta red' : 'alerta';
+                if ($temAlerta == 'on' || $temAlerta == 'red on') {
+                    echo "<div class='$classAlerta' id='alerta'>
+                        <p>$mensagemAlerta</p>
+                    </div>";
+                }
+            ?>        
             <h1>Logotipo</h1>
             <h3>Slogan rápido e explicativo.</h3>
         </div>

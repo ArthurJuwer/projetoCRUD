@@ -131,7 +131,7 @@
                 $this->atualizarSenha($senha);
                 $_SESSION['inicializado'] = false;
                 $_SESSION['etapa'] = 1;
-                header('Location: ../login.php');
+                $this->redirecionarLogin();
                 exit;
             } else {
                 $this->mensagemAlerta = 'Verifique se as senhas estão iguais.';
@@ -140,6 +140,15 @@
                 $this->fraseDestaque = "Preencha os campos com a nova senha.";
             }
             $this->atualizarFormularios();
+        }
+        private function redirecionarLogin(){
+            $this->alertaLogin();
+            header('Location: ../login.php');
+        }
+        private function alertaLogin(){
+            session_start();
+            $_SESSION['mensagem_alerta'] = 'Senha atualizada com sucesso';
+            $_SESSION['mostrar_alerta'] = 'on';
         }
 
         private function atualizarSenha($senha) {

@@ -21,7 +21,13 @@ require_once '../../assets/php/conect.php';
         }
         private function redirecionarLogin() {
             header('Location: ../../login.php'); 
+            $this->alertaLogin();
             exit();
+        }
+        private function alertaLogin(){
+            session_start();
+            $_SESSION['mensagem_alerta'] = 'Logue na sua conta para acessar o painel';
+            $_SESSION['mostrar_alerta'] = 'red on';
         }
 
         public function getEmailLogado(){
@@ -30,6 +36,9 @@ require_once '../../assets/php/conect.php';
     }
 
     class AdminReadDataBase extends Admin{
+
+        ## adicionar uma opção de pesquisar e uma opção de excluir
+
         protected $dadosRecuperados;
         protected $valorlinha;
 

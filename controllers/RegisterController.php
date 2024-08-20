@@ -9,6 +9,8 @@
         protected $usuarioTipoCriado = 'Interno'; 
         protected $showError;
         protected $messageError;
+        protected $mensagemAlerta;
+        protected $ativarAlerta;
 
         public function __construct()
         {
@@ -53,6 +55,7 @@
             } else {
                 if ($this->verificarConfirmacaoSenha()) {
                     $this->inserirDadosBanco();
+                    
                     $this->redirecionarLogin();
                 } else {
                     $this->showError = 'on';
@@ -63,8 +66,15 @@
         }
         
         private function redirecionarLogin() {
+            $this->alertaLogin();
+                // Redirecionar para a página de login sem parâmetros adicionais
             header('Location: ../login.php');
             exit();
+        }
+        private function alertaLogin(){
+            session_start();
+            $_SESSION['mensagem_alerta'] = 'Conta criada com sucesso';
+            $_SESSION['mostrar_alerta'] = 'on';
         }
         
         private function pegarHorarioAtual(){

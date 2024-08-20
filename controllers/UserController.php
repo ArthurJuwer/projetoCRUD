@@ -22,7 +22,13 @@
 
         private function redirecionarLogin() {
             header('Location: ../../login.php'); 
+            $this->alertaLogin();
             exit();
+        }
+        private function alertaLogin(){
+            session_start();
+            $_SESSION['mensagem_alerta'] = 'Logue na sua conta para acessar o painel';
+            $_SESSION['mostrar_alerta'] = 'red on';
         }
 
         public function getEmailLogado() {
@@ -128,7 +134,6 @@
                 $this->corPop = 'red';
                 $this->mensagemPop = 'Erro ao atualizar dados.';
                 $this->mostrarPopup();
-                
             }
         }
         public function mostrarPopup(){

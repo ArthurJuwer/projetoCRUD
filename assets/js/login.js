@@ -18,4 +18,16 @@ if (changeImage && passwordInput) {
 
 function onSubmit(token) {
     document.getElementById("login-form").submit();
-  }
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    const alerta = document.getElementById('alerta');
+
+    if (alerta) {
+        alerta.style.display = 'block'; // Mostra o alerta
+
+        setTimeout(() => {
+            alerta.style.display = 'none'; // Oculta o alerta após 5 segundos
+        }, 5000);
+    }
+});
