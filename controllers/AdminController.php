@@ -157,6 +157,9 @@ require_once '../../assets/php/conect.php';
             }
         }
         private function editarUsuario($id) {
+            
+            $this->mostrarModal();
+            
             // abrir POPUP com formulario
 
             // enviar via submit 
@@ -170,21 +173,41 @@ require_once '../../assets/php/conect.php';
         }
         
         private function desbloquearUsuario($id) {
-            // mudar no banco de dados os valores
 
-            // mudar a cor de vermelho   para verde (desbloqueado | 0)
+            // popup certeza
+
+            $pdo = conectar();
+
+            $TABELA = 'lista_usuarios';
+
+            $RESETAR_TENTATIVAS = 0;
+
+            $stmt = $pdo->prepare("UPDATE $TABELA SET attemptsEmail = :attemptsEmail WHERE id = :id");
+            $stmt->bindParam(':attemptsEmail', $RESETAR_TENTATIVAS);
+            $stmt->bindParam(':id', $id);
+
+            $stmt->execute();
+
+            header("Refresh: 0");
         }
         
         private function removerUsuario($id) {
+
+            // popup certeza
             
             $pdo = conectar();
 
-            $stmt = $pdo->prepare("DELETE FROM `lista_usuarios` WHERE id = :id");
+            $TABELA = 'lista_usuarios';
+
+            $stmt = $pdo->prepare("DELETE FROM $TABELA WHERE id = :id");
             $stmt->bindParam(':id', $id);
 
             $stmt->execute();
             
-            header("Refresh: 1");
+            header("Refresh: 0");
+        }
+        private function mostrarModal(){
+           // code...!
         }
         
     }
@@ -320,5 +343,6 @@ require_once '../../assets/php/conect.php';
             $showPopUp = [$this->mostrarPop, $this->corPop,$this->mensagemPop];
             return $showPopUp;
         }
+        
     }
 ?>
