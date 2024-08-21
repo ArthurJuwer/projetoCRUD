@@ -48,3 +48,9 @@ h2 {
         cursor: pointer;
     }
 }
+.notblocked{
+    color: green;
+}
+.blocked{
+    color: red;
+}

@@ -1,19 +1,34 @@
 <?php 
 require_once '../../assets/php/conect.php';
     class Admin{
-        protected $emailUser; 
+        protected $usuarioEmail; 
         protected $mostrarPop;
         protected $corPop;
         protected $mensagemPop;
 
         public function __construct(){
             $this->obterEmailAdmin();
+            $this->atualizarTentativasUsuario();
+            
+        }
+
+        private function atualizarTentativasUsuario(){
+            $pdo = conectar();
+
+            $TABELA = 'lista_usuarios';
+
+            $RESETAR_TENTATIVAS = 0;
+
+            $stmt = $pdo->prepare("UPDATE $TABELA SET attemptsEmail = :attemptsEmail WHERE email = :email");
+            $stmt->bindParam(':attemptsEmail', $RESETAR_TENTATIVAS);
+            $stmt->bindParam(':email', $this->usuarioEmail);
+            $stmt->execute();
         }
 
         private function obterEmailAdmin(){
             session_start();
             if (isset($_SESSION['email_usuario'])) {
-                $this->emailUser = $_SESSION['email_usuario'];
+                $this->usuarioEmail = $_SESSION['email_usuario'];
             } else {
                 $this->redirecionarLogin();
             }
@@ -31,7 +46,7 @@ require_once '../../assets/php/conect.php';
         }
 
         public function getEmailLogado(){
-            return $this->emailUser;
+            return $this->usuarioEmail;
         }
     }
 
@@ -44,6 +59,7 @@ require_once '../../assets/php/conect.php';
 
         public function __construct(){
             parent::__construct();
+            $this->processarAcao();
         }
 
         public function lerBancoDados(){
@@ -63,7 +79,8 @@ require_once '../../assets/php/conect.php';
         
 
         private function adicionarColunaNaTela(){
-            foreach ($this->dadosRecuperados as $key) {            
+            foreach ($this->dadosRecuperados as $key) {  
+                $id = $key['id'];           
                 $email = $key['email'];
                 $user_type = $key['user_type'];
                 $sobrenome = $key['lastName'];
@@ -73,7 +90,19 @@ require_once '../../assets/php/conect.php';
                 $telefone = $key['phone'];
                 $empresa = $key['company'];
                 $ultimoLogin = $key['lastLogin'];
-                echo "<tr>
+                $usuarioBloqueado = $key['attemptsEmail'];
+
+                $corBloqueado ?? '';
+
+                $usuarioBloqueado < 3 ? $corBloqueado = 'notblocked' : $corBloqueado = 'blocked';
+            
+                $action = htmlspecialchars($_SERVER['PHP_SELF']);
+                
+                $actionEditar = $action . '?action=editar';
+                $actionDesbloquear = $action . '?action=desbloquear';
+                $actionDeletar = $action . '?action=deletar';
+
+            echo "<tr>
                     <td>$user_type</td>
                     <td>$sobrenome</td>
                     <td>$nome</td>
@@ -84,29 +113,80 @@ require_once '../../assets/php/conect.php';
                     <td>$ultimoLogin</td>
                     <td><span class='ticket'>ATIVADO</span></td>
                     <td class='actions'>
-                        <form method='post' action=''>
-                            <input type='hidden' name='action' value='editar'>
+                        <form method='post' action='$actionEditar'>
+                            <input type='hidden' name='linha_id' value='$id'>
                             <button type='submit'>
                                 <i class='fa-solid fa-pen-to-square'></i>
                             </button>
                         </form>
-                        <form method='post' action=''
-                            <input type='hidden' name='action' value='deletar'>
+                        <form method='post' action='$actionDesbloquear'>
+                            <input type='hidden' name='linha_id' value='$id'>
                             <button type='submit'>
-                                <i class='fa-solid fa-user-slash'></i>
+                                <i class='$corBloqueado fa-solid fa-user-slash'></i>
                             </button>
                         </form>
-                        <form method='post' action=''>
-                            <input type='hidden' name='action' value='remover'>
+                        <form method='post' action='$actionDeletar'>
+                            <input type='hidden' name='linha_id' value='$id'>
                             <button type='submit'>
                                 <i class='fa-solid fa-trash'></i>
                             </button>
                         </form>
                     </td>
-                    
                 </tr>";
+
             }
         }
+        public function processarAcao(){
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                if (isset($_POST['linha_id'])) {
+                    $linha_id = $_POST['linha_id'];
+                    $acao = $_GET['action'];
+    
+                    switch ($acao) {
+                        case 'editar':
+                            $this->editarUsuario($linha_id);
+                            break;
+                        case 'desbloquear':
+                            $this->desbloquearUsuario($linha_id);
+                            break;
+                        case 'deletar':
+                            $this->removerUsuario($linha_id);
+                        break;
+                    }
+                }
+            }
+        }
+        private function editarUsuario($id) {
+            // abrir POPUP com formulario
+
+            // enviar via submit 
+
+            // fechar popUp
+
+            // se der resultado certo alerta positivo
+
+            // se der resultado errado alerta errado
+
+        }
+        
+        private function desbloquearUsuario($id) {
+            // mudar no banco de dados os valores
+
+            // mudar a cor de vermelho   para verde (desbloqueado | 0)
+        }
+        
+        private function removerUsuario($id) {
+            
+            $pdo = conectar();
+
+            $stmt = $pdo->prepare("DELETE FROM `lista_usuarios` WHERE id = :id");
+            $stmt->bindParam(':id', $id);
+
+            $stmt->execute();
+            
+            header("Refresh: 1");
+        }
+        
     }
     class AdminCreateUser extends Admin{
         protected $cargo;

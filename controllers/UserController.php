@@ -6,8 +6,22 @@
         protected $corPop;
         protected $mensagemPop;
 
-        public function __construct() {
+        public function __construct(){
             $this->obterEmailUsuarioLogado();
+            $this->atualizarTentativasUsuario();
+        }
+
+        private function atualizarTentativasUsuario(){
+            $pdo = conectar();
+
+            $TABELA = 'lista_usuarios';
+
+            $RESETAR_TENTATIVAS = 0;
+
+            $stmt = $pdo->prepare("UPDATE $TABELA SET attemptsEmail = :attemptsEmail WHERE email = :email");
+            $stmt->bindParam(':attemptsEmail', $RESETAR_TENTATIVAS);
+            $stmt->bindParam(':email', $this->emailLogado);
+            $stmt->execute();
         }
 
         private function obterEmailUsuarioLogado() {
