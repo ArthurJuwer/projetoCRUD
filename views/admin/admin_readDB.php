@@ -15,6 +15,7 @@
     $adminReadDb = new AdminReadDataBase;
 
     $emailLogado = $adminReadDb->getEmailLogado();
+
 ?>
 <section class="left-menu">
         <nav>
@@ -52,6 +53,9 @@
     </section>
     <section class="content">
     <h2>Tabela de Usuarios: </h2>
+
+
+
 
 <table class="custom-table">
     <thead>
