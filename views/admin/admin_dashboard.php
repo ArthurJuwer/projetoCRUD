@@ -47,7 +47,6 @@
         </div>
         <div class="header-infos">
             <p><?=$emailLogado?></p>
-            <p>trocar perfil</p>
             <form action="<?=$_SERVER['PHP_SELF']?>" method="post">
                 <button class="sair" name="sair" value="sair" type="submit">sair</button>
             </form>

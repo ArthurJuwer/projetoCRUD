@@ -47,14 +47,13 @@
         </div>
         <div class="header-infos">
             <p><?=$emailLogado?></p>
-            <p>trocar perfil</p>
             <form action="<?=$_SERVER['PHP_SELF']?>" method="post">
                 <button class="sair" name="sair" value="sair" type="submit">sair</button>
             </form>
         </div>
     </section>
     <section class="content">
-    <h2>Lista de Usuarios: </h2>
+    <h2>Lista de Usuarios</h2>
     <div class="search-database">
         <p>Pesquisar: </p>
         <?php
