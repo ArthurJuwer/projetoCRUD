@@ -52,11 +52,14 @@
         </div>
     </section>
     <section class="content">
-    <h2>Tabela de Usuarios: </h2>
-
-
-
-
+    <h2>Lista de Usuarios: </h2>
+    <div class="search-database">
+        <p>Pesquisar: </p>
+        <?php
+            $adminReadDb->criarPesquisar();
+        ?>
+        
+    </div>
 <table class="custom-table">
     <thead>
         <tr>
@@ -74,7 +77,7 @@
     </thead>
     <tbody>
         <?php 
-            $adminReadDb->lerBancoDados();
+            $adminReadDb->lerPesquisa();
         ?>
     </tbody>
 </table>
