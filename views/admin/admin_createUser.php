@@ -58,9 +58,10 @@
             </div>
             <div class="container-content-actions">
                 <h2>Ações</h2>
-                <form action="" method="">
+                <form action="<?=$_SERVER['PHP_SELF']?>" method="post">
                     <button name="usuarioTeste" type="submit">Replicar Usuario Teste</button>
                     <button name="usuarioAnterior" type="submit">Replicar Usuario Anterior</button>
+                    <button name="limparCampos" type="submit">Limpar Campos</button>
                 </form>
             </div>
         </div>

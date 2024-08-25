@@ -46,7 +46,7 @@
         </div>
     </section>
     <section class="content">
-        <h1>Conteudo</h1>
+        <h2>Conteudo</h2>
     </section>
     
 </body>
