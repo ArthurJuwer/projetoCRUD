@@ -48,7 +48,9 @@
         <div class="header-infos">
             <p><?=$emailLogado?></p>
             <p>trocar perfil</p>
-            <a href="../../login.php">sair</i></a>
+            <form action="<?=$_SERVER['PHP_SELF']?>" method="post">
+                <button class="sair" name="sair" value="sair" type="submit">sair</button>
+            </form>
         </div>
     </section>
     <section class="content">

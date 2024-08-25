@@ -9,6 +9,7 @@ require_once '../../assets/php/conect.php';
         public function __construct(){
             $this->obterEmailAdmin();
             $this->atualizarTentativasUsuario();
+            $this->sairConta();
             
         }
 
@@ -27,7 +28,7 @@ require_once '../../assets/php/conect.php';
 
         private function obterEmailAdmin(){
             session_start();
-            if (isset($_SESSION['email_usuario'])) {
+            if (isset($_SESSION['email_usuario']) && $_SESSION['email_usuario'] != null) {
                 $this->usuarioEmail = $_SESSION['email_usuario'];
             } else {
                 $this->redirecionarLogin();
@@ -43,6 +44,15 @@ require_once '../../assets/php/conect.php';
             session_start();
             $_SESSION['mensagem_alerta'] = 'Logue na sua conta para acessar o painel';
             $_SESSION['mostrar_alerta'] = 'red on';
+        }
+        private function sairConta(){
+            if (isset($_POST['sair']) && $_POST['sair'] == 'sair') {
+                session_start();
+                $_SESSION['email_logado'] = null;
+                $_SESSION['email_usuario'] = null;
+                header('Location: ../../login.php');
+                exit(); 
+            } 
         }
 
         public function getEmailLogado(){

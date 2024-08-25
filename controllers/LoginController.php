@@ -16,6 +16,14 @@
                 $this->receberDadosFormulario();
                 $this->receberDadosBancoDados();
                 $this->resetarTempoAlerta();
+                $this-> verificarLogado();
+                
+            }
+
+            public function verificarLogado(){
+                if (isset($_SESSION['email_logado']) && $_SESSION['email_logado'] != null) {
+                    $this->redirecionarDeAcordoComTipoUsuario();
+                }
             }
 
             public function resetarTempoAlerta(){
@@ -36,6 +44,11 @@
             private function receberDadosFormulario(){
                 $this->usuarioEmail = $_POST['email'] ?? '';
                 $this->usuarioSenha = $_POST['password'] ?? '';
+                $_SESSION['logado'] = $_POST['checkbox'] ?? '';
+                if($_SESSION['logado'] == true){
+                    $_SESSION['email_logado'] = $this->usuarioEmail;
+                    // $_SESSION['senha_logado'] = $this->usuarioSenha;
+                }
             }
 
             private function verificarTentativasUsuario(){
@@ -95,14 +108,21 @@
                 }
             }
             protected function redirecionarDeAcordoComTipoUsuario(){
-                session_start();
-
-                $_SESSION['email_usuario'] = $this->usuarioEmail;
+                // session_start();
+                if(isset($_SESSION['email_logado']) && $_SESSION['email_logado'] != null){
+                    $_SESSION['email_usuario'] = $_SESSION['email_logado'];
+                } else {
+                    $_SESSION['email_usuario'] = $this->usuarioEmail;
+                }
+                
                 $this->registrarLogin();
                 if($this->usuarioTipo == 'User'){
                     header('Location: views/user/user_dashboard.php');
+                    exit();
                 } else {
                     header('Location: views/admin/admin_dashboard.php');
+                    exit();
+                
                 }
             }
             private function registrarLogin(){
@@ -110,7 +130,8 @@
                 $TABELA = 'lista_usuarios';
 
                 $stmt = $pdo->prepare("UPDATE $TABELA SET `lastLogin` = NOW() WHERE email = :email");
-                $stmt->execute(['email' => $this->usuarioEmail]);
+                $stmt->execute(['email' => $_SESSION['email_usuario']]); 
+                // VER ESTA LINHA
             }
             public function mostrarErro(){
                 $showPopUp = [$this->showError, $this->messageError];

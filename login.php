@@ -12,6 +12,8 @@
     <?php 
     session_start();
 
+    // var_dump($_SESSION['email_logado']);
+
     $temAlerta = isset($_SESSION['mostrar_alerta']) ? $_SESSION['mostrar_alerta'] : '';
     $mensagemAlerta = isset($_SESSION['mensagem_alerta']) ? $_SESSION['mensagem_alerta'] : '';
 
@@ -52,6 +54,10 @@
                     <input type="password" name="password" required>
                 </div>
                 <div class="main-form-links">
+                    <div class="main-form-links-checkbox">
+                        <input type="checkbox" name="checkbox">
+                        <label for="checkbox">Manter Logado?</label>
+                    </div>
                     <a href="views/passwordRecovery.php">Esqueceu sua senha?</a>
                 </div>
                 <div class="alert-message <?=$mostrarErro[0]?>" >

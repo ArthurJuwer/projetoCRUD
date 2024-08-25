@@ -1,6 +1,4 @@
-form{
-    margin-top: 1.6rem;
-}
+
 .row-form{
     width: 30rem;
     display: flex;
@@ -53,6 +51,9 @@ form{
 .container-content{
     display: flex;
     column-gap: 8rem;
+    form{
+        margin-top: 1.6rem;
+    }
 }
 hr{
     margin: 2rem 0 1rem;
