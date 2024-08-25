@@ -386,7 +386,6 @@ require_once '../../assets/php/conect.php';
             </div>
             <script>
                 function closeModal() {
-                    // Função para fechar o modal
                     document.querySelector(".popup-content").style.display = "none";
                 }
             </script>
@@ -452,24 +451,124 @@ require_once '../../assets/php/conect.php';
         
         public function __construct(){
             parent::__construct();
+            $this->pegarDadosFormulario();
+        }
+
+        public function criarFormulario(){
+            echo '<form action="'. $_SERVER["PHP_SELF"] . '" method="post">
+                <div class="row-form">
+                        <label for="empresa">Empresa: </label>
+                        <input type="text" name="empresa" value="'.$this->empresa.'" required>
+                    </div>
+                    <div class="row-form">
+                        <label for="cargo">Cargo: </label>
+                        <input type="text" name="cargo" required>
+                    </div>
+                    <div class="row-form">
+                        <label for="primeiroNome">Primeiro nome: </label>
+                        <input type="text" name="primeiroNome" required>
+                    </div>
+                    <div class="row-form">
+                        <label for="sobrenome">Sobrenome: </label>
+                        <input type="text" name="sobrenome" required>
+                    </div>
+                    <div class="row-form">
+                        <label for="genero">Gênero: </label>
+                        <select name="genero" required>
+                            <option value="Masculino">Masculino</option>
+                            <option value="Feminino">Feminino</option>
+                            <option value="Undefined">Prefiro não informar</option>
+                        </select>
+                    </div>
+                    <div class="row-form">
+                        <label for="funcionario">Funcionário: </label>
+                        <select name="funcionario" required>
+                            <option value="isFuncionarioFalse">Não</option>
+                            <option value="isFuncionarioTrue">Sim</option>
+                        </select>
+                    </div>
+                    <div class="row-form">
+                        <label for="supervisor">Supervisor: </label>
+                        <select name="supervisor" required>
+                            <option value="nao definido">Não Definido</option>
+                            <optgroup label="Grupo 1">
+                                <option value="arthur">Arthur</option>
+                                <option value="rodrigo">Rodrigo</option>
+                            </optgroup>
+                            <optgroup label="Grupo 2">
+                                <option value="leonardo">Leonardo</option>
+                                <option value="eduardo">Eduardo</option>
+                            </optgroup> 
+                        </select>
+                    </div>
+                    <div class="row-form">
+                        <label for="user_type">Tipo de Usuario: </label>
+                        <select name="user_type" required>
+                            <option value="User">User</option>
+                            <option value="Admin">Admin</option>
+                        </select>
+                    </div>
+                    <div class="row-form">
+                        <label for="email">Email: </label>
+                        <input type="email" name="email" required>
+                    </div>
+                    <div class="row-form">
+                        <label for="password">Senha: </label>
+                        <input type="password" name="password" required>
+                    </div>
+                    <div class="row-form">
+                        <label for="endereco">Endereço: </label>
+                        <textarea name="endereco" required></textarea>
+                    </div>
+                    <div class="row-form">
+                        <label for="cep">CEP: </label>
+                        <input type="text" name="cep" required>
+                    </div>
+                    <div class="row-form">
+                        <label for="municipio">Município: </label>
+                        <input type="text" name="municipio" required>
+                    </div>
+                    <div class="row-form">
+                        <label for="pais">País: </label>
+                        <input type="text" name="pais" required>
+                    </div>
+                    <div class="row-form">
+                        <label for="estado">Estado: </label>
+                        <input type="text" name="estado" required>
+                    </div>
+                    <div class="row-form">
+                        <label for="celular">Celular: </label>
+                        <input type="tel" name="celular" required>
+                    </div>
+                    <div class="end-form">
+                        <input type="submit" value="Criar Usuário">
+                    </div>
+                    <div class="alert-message ' . $this->mostrarPop . ' ' . $this->corPop . ' " >
+                        <p>' . $this->mensagemPop . '</p>
+                    </div>
+            </form>';
         }
         public function pegarDadosFormulario(){
-            $this->cargo = $_POST['cargo'];
-            $this->empresa = $_POST['empresa'];
-            $this->primeiroNome = $_POST['primeiroNome'];
-            $this->sobrenome = $_POST['sobrenome'];
-            $this->genero = $_POST['genero'];
-            $this->funcionario = $_POST['funcionario'];
-            $this->supervisor = $_POST['supervisor'];
-            $this->usuarioTipo = $_POST['user_type'];
-            $this->password = $_POST['password'];
-            $this->endereco = $_POST['endereco'];
-            $this->cep = $_POST['cep'];
-            $this->municipio = $_POST['municipio'];
-            $this->pais = $_POST['pais'];
-            $this->estado = $_POST['estado'];
-            $this->celular = $_POST['celular'];
-            $this->email = $_POST['email'];
+            if($_SERVER['REQUEST_METHOD'] === 'POST'){
+                $this->cargo = $_POST['cargo'];
+                $this->empresa = $_POST['empresa'];
+                $this->primeiroNome = $_POST['primeiroNome'];
+                $this->sobrenome = $_POST['sobrenome'];
+                $this->genero = $_POST['genero'];
+                $this->funcionario = $_POST['funcionario'];
+                $this->supervisor = $_POST['supervisor'];
+                $this->usuarioTipo = $_POST['user_type'];
+                $this->password = $_POST['password'];
+                $this->endereco = $_POST['endereco'];
+                $this->cep = $_POST['cep'];
+                $this->municipio = $_POST['municipio'];
+                $this->pais = $_POST['pais'];
+                $this->estado = $_POST['estado'];
+                $this->celular = $_POST['celular'];
+                $this->email = $_POST['email'];
+                
+                $this->criarUserNoBancoDados();
+            }
         }
 
         private function pegarHorarioAtual(){
@@ -547,21 +646,13 @@ require_once '../../assets/php/conect.php';
                 $this->mostrarPop = 'on';
                 $this->corPop = 'green';
                 $this->mensagemPop = 'Usuario criado com sucesso!';
-                $this->mostrarPopup();
-                
+
             } else {
                 $this->mostrarPop = 'on';
                 $this->corPop = 'red';
                 $this->mensagemPop = 'Erro ao criar usuario.';
-                $this->mostrarPopup();
-                
+
             }
-        }
-        public function mostrarPopup(){
-            $showPopUp = [$this->mostrarPop, $this->corPop,$this->mensagemPop];
-            return $showPopUp;
-        }
-        
-        
+        }      
     }
 ?>

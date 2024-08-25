@@ -11,9 +11,7 @@
 </head>
 <body>
     <?php
-        $showPopUp = ['','','']; 
         require_once "../../controllers/UserController.php";
-
 
         $userProfile = new UserProfile;
         $emailUsuario = $userProfile->getEmailLogado();
@@ -21,7 +19,6 @@
         if ($_SERVER['REQUEST_METHOD'] == 'POST'){
             $userProfile->obterDadosFormulario();
             $userProfile->atualizarBancoDados();
-            $showPopUp = $userProfile->mostrarPopup();
         } 
     ?>
     <section class="left-menu">
@@ -57,119 +54,7 @@
     </section>
     <section class="content">
         <h2>Mudar Informações</h2>
-        <form action="<?=$_SERVER['PHP_SELF']?>" method="post">
-        <div class="row-form">
-                <label for="empresa">Empresa: </label>
-                <input type="text" name="empresa" value="<?=htmlspecialchars($userProfile->dadosFormulario['company'])?>">
-            </div>
-            <div class="row-form">
-                <label for="cargo">Cargo: </label>
-                <input type="text" name="cargo" value="<?=htmlspecialchars($userProfile->dadosFormulario['position'])?>">
-            </div>
-            <div class="row-form">
-                <label for="primeiroNome">Primeiro nome: </label>
-                <input type="text" name="primeiroNome" value="<?=htmlspecialchars($userProfile->dadosFormulario['firstName'])?>">
-            </div>
-            <div class="row-form">
-                <label for="sobrenome">Sobrenome: </label>
-                <input type="text" name="sobrenome" value="<?=htmlspecialchars($userProfile->dadosFormulario['lastName'])?>">
-            </div>
-            <div class="row-form">
-                <label for="isAdmin">Administrador do sistema: </label>
-                <div class="row-form-icon">
-                    <i class="fa-solid fa-user"></i>
-                    <input type="text" name="isAdmin" value="<?=htmlspecialchars($userProfile->dadosFormulario['user_type'] == 'User' ? 'Não' : 'Sim')?>" disabled>
-                </div>
-            </div>
-            <div class="row-form">
-                <label for="genero">Gênero: </label>
-                <select name="genero">
-                    <option value="Masculino" <?= $userProfile->dadosFormulario['gender'] == 'Masculino' ? 'selected' : '' ?>>Masculino</option>
-                    <option value="Feminino" <?= $userProfile->dadosFormulario['gender'] == 'Feminino' ? 'selected' : '' ?>>Feminino</option>
-                    <option value="Undefined" <?= $userProfile->dadosFormulario['gender'] == 'Undefined' ? 'selected' : '' ?>>Prefiro não informar</option>
-                </select>
-            </div>
-            <div class="row-form">
-                <label for="funcionario">Funcionário: </label>
-                <select name="funcionario">
-                    <option value="isFuncionarioFalse" <?= $userProfile->dadosFormulario['isEmployee'] == 'isFuncionarioFalse' ? 'selected' : '' ?>>Não</option>
-                    <option value="isFuncionarioTrue" <?= $userProfile->dadosFormulario['isEmployee'] == 'isFuncionarioTrue' ? 'selected' : '' ?>>Sim</option>
-                </select>
-            </div>
-            <div class="row-form">
-                <label for="supervisor">Supervisor: </label>
-                <select name="supervisor">
-                    <option value="nao definido" <?= $userProfile->dadosFormulario['supervisor'] == 'Não definido' ? 'selected' : '' ?>>Não Definido</option>
-                    <optgroup label="Grupo 1">
-                        <option value="arthur" <?= $userProfile->dadosFormulario['supervisor'] == 'Arthur' ? 'selected' : '' ?>>Arthur</option>
-                        <option value="rodrigo" <?= $userProfile->dadosFormulario['supervisor'] == 'Rodrigo' ? 'selected' : '' ?>>Rodrigo</option>
-                    </optgroup>
-                    <optgroup label="Grupo 2">
-                        <option value="leonardo" <?= $userProfile->dadosFormulario['supervisor'] == 'Leonardo' ? 'selected' : '' ?>>Leonardo</option>
-                        <option value="eduardo" <?= $userProfile->dadosFormulario['supervisor'] == 'Eduardo' ? 'selected' : '' ?>>Eduardo</option>
-                    </optgroup> 
-                </select>
-            </div>
-            <div class="row-form">
-                <label for="user_extern">Usuário Externo? </label>
-                <input type="text" name="user_extern" value="<?=htmlspecialchars($userProfile->dadosFormulario['user_extern'] == 'Interno' ? 'Interno' : 'Admin')?>" disabled>
-            </div>
-            <hr>
-            <div class="row-form">
-                <label for="password">Senha: </label>
-                <div class="row-form-image">
-                    <img src="../../assets/images/eyeOpen.png" alt="showPassword" name="imagePassword">
-                    <input type="password" name="password" value="<?=htmlspecialchars($userProfile->dadosFormulario['password'])?>">
-                </div>
-            </div>
-            <hr>
-            <div class="row-form">
-                <label for="endereco">Endereço: </label>
-                <textarea name="endereco"><?=htmlspecialchars($userProfile->dadosFormulario['address'])?></textarea>
-            </div>
-            <div class="row-form">
-                <label for="cep">CEP: </label>
-                <input type="text" name="cep" value="<?=htmlspecialchars($userProfile->dadosFormulario['zipCode'])?>">
-            </div>
-            <div class="row-form">
-                <label for="municipio">Município: </label>
-                <input type="text" name="municipio" value="<?=htmlspecialchars($userProfile->dadosFormulario['city'])?>">
-            </div>
-            <div class="row-form">
-                <label for="pais">País: </label>
-                <div class="row-form-icon">
-                    <i class="fa-solid fa-earth-americas"></i>
-                    <input type="text" name="pais" value="<?=htmlspecialchars($userProfile->dadosFormulario['country'])?>">
-                </div>
-            </div>
-            <div class="row-form">
-                <label for="estado">Estado: </label>
-                <div class="row-form-icon">
-                    <i class="fa-solid fa-map-location-dot"></i>
-                    <input type="text" name="estado" value="<?=htmlspecialchars($userProfile->dadosFormulario['state'])?>">
-                </div>
-            </div>
-            <div class="row-form">
-                <label for="celular">Celular: </label>
-                <div class="row-form-icon">
-                    <i class="fa-solid fa-phone"></i>
-                    <input type="tel" name="celular" value="<?=htmlspecialchars($userProfile->dadosFormulario['phone'])?>">
-                </div>
-            </div>
-            <div class="row-form">
-                <label for="email">Email: </label>
-                <div class="row-form-icon">
-                    <i class="fa-solid fa-at"></i>
-                    <input type="text" name="email" value="<?=htmlspecialchars($userProfile->dadosFormulario['email'])?>" disabled>
-                </div>
-            </div>
-            <div class="end-form">
-                <input type="submit" value="Atualizar">
-            </div>
-            <div class="alert-message <?=$showPopUp[0]?> <?=$showPopUp[1]?>" >
-                <p><?=$showPopUp[2]?></p>
-            </div>
-        </form>
+        <?=$userProfile->criarFormulario();?>
     </section>
 </body>
 </html>

@@ -51,11 +51,127 @@
     }
 
     class UserProfile extends User {
-        public $dadosFormulario = [];
+        protected $dadosFormulario = [];
 
         public function __construct() {
             parent::__construct(); 
             $this->recuperarDadosUsuario();
+        }
+
+        public function criarFormulario() {
+            echo '<form action="' . $_SERVER["PHP_SELF"] . '" method="post">
+                    <div class="row-form">
+                        <label for="empresa">Empresa: </label>
+                        <input type="text" name="empresa" value="'. htmlspecialchars($this->dadosFormulario['company'], ENT_QUOTES) .'">
+                    </div>
+                    <div class="row-form">
+                        <label for="cargo">Cargo: </label>
+                        <input type="text" name="cargo" value="'. htmlspecialchars($this->dadosFormulario['position'], ENT_QUOTES) .'">
+                    </div>
+                    <div class="row-form">
+                        <label for="primeiroNome">Primeiro nome: </label>
+                        <input type="text" name="primeiroNome" value="'. htmlspecialchars($this->dadosFormulario['firstName'], ENT_QUOTES) .'">
+                    </div>
+                    <div class="row-form">
+                        <label for="sobrenome">Sobrenome: </label>
+                        <input type="text" name="sobrenome" value="'. htmlspecialchars($this->dadosFormulario['lastName'], ENT_QUOTES) .'">
+                    </div>
+                    <div class="row-form">
+                        <label for="isAdmin">Administrador do sistema: </label>
+                        <div class="row-form-icon">
+                            <i class="fa-solid fa-user"></i>
+                            <input type="text" name="isAdmin" disabled value="'. htmlspecialchars($this->dadosFormulario['user_type'], ENT_QUOTES) .'">
+                        </div>
+                    </div>
+                    <div class="row-form">
+                        <label for="genero">Gênero: </label>
+                        <select name="genero">
+                            <option value="Masculino"' . ($this->dadosFormulario['gender'] == 'Masculino' ? ' selected' : '') . '>Masculino</option>
+                            <option value="Feminino"' . ($this->dadosFormulario['gender'] == 'Feminino' ? ' selected' : '') . '>Feminino</option>
+                            <option value="Undefined"' . ($this->dadosFormulario['gender'] == 'Undefined' ? ' selected' : '') . '>Prefiro não informar</option>
+                        </select>
+                    </div>
+                    <div class="row-form">
+                        <label for="funcionario">Funcionário: </label>
+                        <select name="funcionario">
+                            <option value="isFuncionarioFalse"' . ($this->dadosFormulario['isEmployee'] == 'isFuncionarioFalse' ? ' selected' : '') . '>Não</option>
+                            <option value="isFuncionarioTrue"' . ($this->dadosFormulario['isEmployee'] == 'isFuncionarioTrue' ? ' selected' : '') . '>Sim</option>
+                        </select>
+                    </div>
+                    <div class="row-form">
+                        <label for="supervisor">Supervisor: </label>
+                        <select name="supervisor">
+                            <option value="nao definido"' . ($this->dadosFormulario['supervisor'] == 'nao definido' ? ' selected' : '') . '>Não Definido</option>
+                            <optgroup label="Grupo 1">
+                                <option value="arthur"' . ($this->dadosFormulario['supervisor'] == 'arthur' ? ' selected' : '') . '>Arthur</option>
+                                <option value="rodrigo"' . ($this->dadosFormulario['supervisor'] == 'rodrigo' ? ' selected' : '') . '>Rodrigo</option>
+                            </optgroup>
+                            <optgroup label="Grupo 2">
+                                <option value="leonardo"' . ($this->dadosFormulario['supervisor'] == 'leonardo' ? ' selected' : '') . '>Leonardo</option>
+                                <option value="eduardo"' . ($this->dadosFormulario['supervisor'] == 'eduardo' ? ' selected' : '') . '>Eduardo</option>
+                            </optgroup> 
+                        </select>
+                    </div>
+                    <div class="row-form">
+                        <label for="user_extern">Usuário Externo? </label>
+                        <input type="text" name="user_extern" disabled value="'. htmlspecialchars($this->dadosFormulario['user_extern'], ENT_QUOTES) .'">
+                    </div>
+                    <hr>
+                    <div class="row-form">
+                        <label for="password">Senha: </label>
+                        <div class="row-form-image">
+                            <img src="../../assets/images/eyeOpen.png" alt="showPassword" name="imagePassword">
+                            <input type="password" name="password" value="'. htmlspecialchars($this->dadosFormulario['password'], ENT_QUOTES) .'">
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row-form">
+                        <label for="endereco">Endereço: </label>
+                        <textarea name="endereco">' . htmlspecialchars($this->dadosFormulario['address'], ENT_QUOTES) . '</textarea>
+                    </div>
+                    <div class="row-form">
+                        <label for="cep">CEP: </label>
+                        <input type="text" name="cep" value="'. htmlspecialchars($this->dadosFormulario['zipCode'], ENT_QUOTES) .'">
+                    </div>
+                    <div class="row-form">
+                        <label for="municipio">Município: </label>
+                        <input type="text" name="municipio" value="'. htmlspecialchars($this->dadosFormulario['city'], ENT_QUOTES) .'">
+                    </div>
+                    <div class="row-form">
+                        <label for="pais">País: </label>
+                        <div class="row-form-icon">
+                            <i class="fa-solid fa-earth-americas"></i>
+                            <input type="text" name="pais" value="'. htmlspecialchars($this->dadosFormulario['country'], ENT_QUOTES) .'">
+                        </div>
+                    </div>
+                    <div class="row-form">
+                        <label for="estado">Estado: </label>
+                        <div class="row-form-icon">
+                            <i class="fa-solid fa-map-location-dot"></i>
+                            <input type="text" name="estado" value="'. htmlspecialchars($this->dadosFormulario['state'], ENT_QUOTES) .'">
+                        </div>
+                    </div>
+                    <div class="row-form">
+                        <label for="celular">Celular: </label>
+                        <div class="row-form-icon">
+                            <i class="fa-solid fa-phone"></i>
+                            <input type="tel" name="celular" value="'. htmlspecialchars($this->dadosFormulario['phone'], ENT_QUOTES) .'">
+                        </div>
+                    </div>
+                    <div class="row-form">
+                        <label for="email">Email: </label>
+                        <div class="row-form-icon">
+                            <i class="fa-solid fa-at"></i>
+                            <input type="text" name="email" disabled value="'. htmlspecialchars($this->dadosFormulario['email'], ENT_QUOTES) .'">
+                        </div>
+                    </div>
+                    <div class="end-form">
+                        <input type="submit" value="Atualizar">
+                    </div>
+                    <div class="alert-message ' . $this->mostrarPop . ' ' . $this->corPop . ' " >
+                        <p>' . $this->mensagemPop . '</p>
+                    </div>
+                </form>';
         }
 
         public function recuperarDadosUsuario(){
@@ -144,18 +260,12 @@
                 $this->mostrarPop = 'on';
                 $this->corPop = 'green';
                 $this->mensagemPop = 'Dados atualizados com sucesso!';
-                $this->mostrarPopup();
                 
             } else {
                 $this->mostrarPop = 'on';
                 $this->corPop = 'red';
                 $this->mensagemPop = 'Erro ao atualizar dados.';
-                $this->mostrarPopup();
             }
-        }
-        public function mostrarPopup(){
-            $showPopUp = [$this->mostrarPop, $this->corPop,$this->mensagemPop];
-            return $showPopUp;
         }
     }
 ?>

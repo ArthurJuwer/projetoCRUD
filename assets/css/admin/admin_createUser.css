@@ -50,6 +50,10 @@ form{
         width: 50%;
     }
 }
+.container-content{
+    display: flex;
+    column-gap: 8rem;
+}
 hr{
     margin: 2rem 0 1rem;
 }
@@ -80,6 +84,26 @@ input[type="submit"]:hover{
     }
 }
 
+.container-content-actions{
+    form{
+        display: flex;
+        flex-direction: column;
+        row-gap: 1rem;
+    }
+    button{
+        height: 2.245rem;
+        width: 16rem;
+        background: #2E7D32;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        font-size: 0.875rem;
+        
+    }
+    button:hover{
+        background: #419445;
+    }
+}
 
   
 
