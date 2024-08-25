@@ -26,8 +26,7 @@
 
         private function obterEmailUsuarioLogado() {
             session_start();
-
-            if (isset($_SESSION['email_usuario'])) {
+            if (isset($_SESSION['email_usuario']) && $_SESSION['email_usuario'] != null) {
                 $this->emailLogado = $_SESSION['email_usuario'];
             } else {
                 $this->redirecionarLogin();
@@ -48,6 +47,7 @@
         public function getEmailLogado() {
             return $this->emailLogado;
         }
+        
     }
 
     class UserProfile extends User {
