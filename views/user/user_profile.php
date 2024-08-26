@@ -14,7 +14,7 @@
         require_once "../../controllers/UserController.php";
 
         $userProfile = new UserProfile;
-        $emailUsuario = $userProfile->getEmailLogado();
+        $emailUsuario = $userProfile->pegarEmailLogado();
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST'){
             $userProfile->obterDadosFormulario();

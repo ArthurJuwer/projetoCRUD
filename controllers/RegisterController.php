@@ -7,10 +7,11 @@
         protected $usuarioHorarioCadastro;
         protected $usuarioTipoPadrao = 'User'; 
         protected $usuarioTipoCriado = 'Interno'; 
-        protected $showError;
-        protected $messageError;
+        protected $aparecerErro;
+        protected $mensagemErro;
         protected $mensagemAlerta;
         protected $ativarAlerta;
+        protected $TABELA = 'lista_usuarios';
 
         public function __construct()
         {
@@ -38,7 +39,7 @@
         private function verificarUsuarioNovo() {
             $pdo = conectar();
             
-            $stmt = $pdo->prepare("SELECT email FROM lista_usuarios WHERE email = :email");
+            $stmt = $pdo->prepare("SELECT email FROM $this->TABELA WHERE email = :email");
             $stmt->bindParam(':email', $this->usuarioEmail);
             $stmt->execute();
             
@@ -49,8 +50,8 @@
         
         private function verificacoesConcluidas() {
             if ($this->verificarUsuarioNovo()) {
-                $this->showError = 'on';
-                $this->messageError = 'Erro! Usuário já cadastrado';
+                $this->aparecerErro = 'on';
+                $this->mensagemErro = 'Erro! Usuário já cadastrado';
                 $this->mostrarErro();
             } else {
                 if ($this->verificarConfirmacaoSenha()) {
@@ -58,8 +59,8 @@
                     
                     $this->redirecionarLogin();
                 } else {
-                    $this->showError = 'on';
-                    $this->messageError = 'Erro! Verifique se as senhas são idênticas';
+                    $this->aparecerErro = 'on';
+                    $this->mensagemErro = 'Erro! Verifique se as senhas são idênticas';
                     $this->mostrarErro();
                 }
             }
@@ -67,7 +68,6 @@
         
         private function redirecionarLogin() {
             $this->alertaLogin();
-                // Redirecionar para a página de login sem parâmetros adicionais
             header('Location: ../login.php');
             exit();
         }
@@ -86,9 +86,8 @@
             $this->pegarHorarioAtual();
         
             $pdo = conectar();
-            $TABELA = 'lista_usuarios';
         
-            $stmt = $pdo->prepare("INSERT INTO $TABELA 
+            $stmt = $pdo->prepare("INSERT INTO $this->TABELA 
             (`email`, `password`, `user_type`, `user_extern`,`time_registered`) VALUES
             (:email, :password, :user_type,:user_extern, :time_registered)");
         
@@ -101,15 +100,15 @@
             if ($stmt->execute()) {
                 $this->redirecionarLogin();
             } else {
+                $this->aparecerErro = 'on';
+                $this->mensagemErro = 'Erro! não foi possivel inserir no Banco de Dados';
                 $this->mostrarErro();
-                $this->showError = 'on';
-                $this->messageError = 'Erro! não foi possivel inserir no Banco de Dados';
             }
         }
         
         public function mostrarErro(){
-            $showPopUp = [$this->showError, $this->messageError];
-            return $showPopUp;
+            $mostrarPopUp = [$this->aparecerErro, $this->mensagemErro];
+            return $mostrarPopUp;
         }
     }
 ?>

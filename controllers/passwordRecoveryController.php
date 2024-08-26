@@ -11,6 +11,7 @@
         protected $mostrarFormularioEmail;
         protected $mostrarFormularioCodigo;
         protected $mostrarFormularioSenha;
+        protected $TABELA = 'lista_usuarios';
 
         public function __construct() {
             $this->iniciarSessao();
@@ -89,7 +90,7 @@
         private function verificarEmailExiste() {
             $pdo = conectar();
 
-            $stmt = $pdo->prepare("SELECT email FROM lista_usuarios WHERE email = :email");
+            $stmt = $pdo->prepare("SELECT email FROM $this->TABELA WHERE email = :email");
             $stmt->bindParam(':email', $this->emailFormulario);
             $stmt->execute();
             return $stmt->fetchColumn();
@@ -155,7 +156,7 @@
             $pdo = conectar();
 
             $emailSalvo = $_SESSION['email'];
-            $stmt = $pdo->prepare("UPDATE lista_usuarios SET password = :senha WHERE email = :email");
+            $stmt = $pdo->prepare("UPDATE $this->TABELA SET password = :senha WHERE email = :email");
             $stmt->bindParam(':senha', $senha);
             $stmt->bindParam(':email', $emailSalvo);
             $stmt->execute();

@@ -11,7 +11,7 @@
     <?php 
         require_once "../../controllers/UserController.php";
         $user = new User();
-        $emailUsuario = $user->getEmailLogado();
+        $emailUsuario = $user->pegarEmailLogado();
     ?>
     <section class="left-menu">
         <nav>

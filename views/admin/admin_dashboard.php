@@ -14,7 +14,7 @@
 
     $admin = new Admin;
 
-    $emailLogado = $admin->getEmailLogado();
+    $emailLogado = $admin->pegarEmailLogado();
     
     ?>
     <section class="left-menu">

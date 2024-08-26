@@ -1,5 +1,7 @@
-form{
-    margin-top: 1.6rem;
+.content{
+    form{
+        margin-top: 1.6rem;
+    }
 }
 .row-form{
     width: 30rem;

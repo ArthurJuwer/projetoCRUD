@@ -30,7 +30,7 @@
         <div class="main-form">
             <form action="<?=$_SERVER['PHP_SELF']?>" method="post" name="formRegister">
                 <label for="email">E-mail</label>
-                <input type="email" name="email"" required>
+                <input type="email" name="email" required>
 
                 <label for="password">Senha: </label>
                 <div class="input-container">

@@ -14,7 +14,7 @@
         require_once "../../controllers/AdminController.php";
 
         $adminCreateUser = new AdminCreateUser;
-        $emailLogado = $adminCreateUser->getEmailLogado();  
+        $emailLogado = $adminCreateUser->pegarEmailLogado();  
     ?>
     <section class="left-menu">
         <nav>

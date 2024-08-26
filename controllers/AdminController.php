@@ -5,22 +5,20 @@ require_once '../../assets/php/conect.php';
         protected $mostrarPop;
         protected $corPop;
         protected $mensagemPop;
+        protected $TABELA = 'lista_usuarios';
 
         public function __construct(){
             $this->obterEmailAdmin();
             $this->atualizarTentativasUsuario();
-            $this->sairConta();
-            
+            $this->sairConta(); 
         }
 
         private function atualizarTentativasUsuario(){
             $pdo = conectar();
 
-            $TABELA = 'lista_usuarios';
-
             $RESETAR_TENTATIVAS = 0;
 
-            $stmt = $pdo->prepare("UPDATE $TABELA SET attemptsEmail = :attemptsEmail WHERE email = :email");
+            $stmt = $pdo->prepare("UPDATE $this->TABELA SET attemptsEmail = :attemptsEmail WHERE email = :email");
             $stmt->bindParam(':attemptsEmail', $RESETAR_TENTATIVAS);
             $stmt->bindParam(':email', $this->usuarioEmail);
             $stmt->execute();
@@ -55,7 +53,7 @@ require_once '../../assets/php/conect.php';
             } 
         }
 
-        public function getEmailLogado(){
+        public function pegarEmailLogado(){
             return $this->usuarioEmail;
         }
     }
@@ -73,9 +71,8 @@ require_once '../../assets/php/conect.php';
     
         public function lerBancoDados() {
             $pdo = conectar();
-            $TABELA = 'lista_usuarios';
     
-            $stmt = $pdo->prepare('SELECT * FROM ' . $TABELA);
+            $stmt = $pdo->prepare('SELECT * FROM ' . $this->TABELA);
             $stmt->execute();
     
             $this->dadosRecuperados = $stmt->fetchAll();
@@ -119,9 +116,8 @@ require_once '../../assets/php/conect.php';
                 $filtro = $_GET['filter'];
                 
                 $pdo = conectar();
-                $TABELA = 'lista_usuarios';
                 
-                $stmt = $pdo->prepare("SELECT * FROM $TABELA WHERE $filtro LIKE :filtro");
+                $stmt = $pdo->prepare("SELECT * FROM $this->TABELA WHERE $filtro LIKE :filtro");
                 $termoPesquisa = '%' . trim($pesquisa) . '%';
                 $stmt->bindParam(":filtro", $termoPesquisa);
                 $stmt->execute();
@@ -224,9 +220,8 @@ require_once '../../assets/php/conect.php';
     
         private function editarUsuario($id) {
             $pdo = conectar();
-            $TABELA = 'lista_usuarios';
     
-            $stmt = $pdo->prepare('SELECT * FROM ' . $TABELA . ' WHERE id = :id');
+            $stmt = $pdo->prepare('SELECT * FROM ' . $this->TABELA . ' WHERE id = :id');
             $stmt->bindParam(':id', $id);
             $stmt->execute();
     
@@ -246,10 +241,9 @@ require_once '../../assets/php/conect.php';
     
         private function desbloquearUsuario($id) {
             $pdo = conectar();
-            $TABELA = 'lista_usuarios';
             $RESETAR_TENTATIVAS = 0;
     
-            $stmt = $pdo->prepare("UPDATE $TABELA SET attemptsEmail = :attemptsEmail WHERE id = :id");
+            $stmt = $pdo->prepare("UPDATE $this->TABELA SET attemptsEmail = :attemptsEmail WHERE id = :id");
             $stmt->bindParam(':attemptsEmail', $RESETAR_TENTATIVAS);
             $stmt->bindParam(':id', $id);
     
@@ -259,9 +253,8 @@ require_once '../../assets/php/conect.php';
     
         private function removerUsuario($id) {
             $pdo = conectar();
-            $TABELA = 'lista_usuarios';
     
-            $stmt = $pdo->prepare("DELETE FROM $TABELA WHERE id = :id");
+            $stmt = $pdo->prepare("DELETE FROM $this->TABELA WHERE id = :id");
             $stmt->bindParam(':id', $id);
             $stmt->execute();
             
@@ -601,8 +594,6 @@ require_once '../../assets/php/conect.php';
 
                 $pdo = conectar();
 
-                $TABELA = 'lista_usuarios';
-
                 $stmt = $pdo->prepare("SELECT `id`, 
                               `email`, 
                               `password`, 
@@ -624,7 +615,7 @@ require_once '../../assets/php/conect.php';
                               `lastLogin`, 
                               `attemptsEmail`, 
                               `time_registered` 
-                       FROM `lista_usuarios` 
+                       FROM $this->TABELA 
                        ORDER BY `id` DESC");
 
             $stmt->execute();
@@ -703,9 +694,7 @@ require_once '../../assets/php/conect.php';
 
             $pdo = conectar();
 
-            $TABELA = 'lista_usuarios';
-
-            $stmt = $pdo->prepare("INSERT INTO $TABELA (
+            $stmt = $pdo->prepare("INSERT INTO $this->TABELA (
                 `email`,
                 `position`,
                 `company`,
@@ -768,12 +757,10 @@ require_once '../../assets/php/conect.php';
                 $this->mostrarPop = 'on';
                 $this->corPop = 'green';
                 $this->mensagemPop = 'Usuario criado com sucesso!';
-
             } else {
                 $this->mostrarPop = 'on';
                 $this->corPop = 'red';
                 $this->mensagemPop = 'Erro ao criar usuario.';
-
             }
         }      
     }

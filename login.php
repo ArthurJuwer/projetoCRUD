@@ -25,10 +25,10 @@
     require_once './controllers/LoginController.php';
     $login = new Login();
 
-    $mostrarErro = ['', ''];
+    $mostrarAlerta = ['', ''];
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $login->verificarSemelhancasDados();
-        $mostrarErro = $login->mostrarErro();
+        $mostrarAlerta = $login->mostrarAlerta();
     }
     ?>
     <main>
@@ -60,8 +60,8 @@
                     </div>
                     <a href="views/passwordRecovery.php">Esqueceu sua senha?</a>
                 </div>
-                <div class="alert-message <?=$mostrarErro[0]?>" >
-                    <p><?=$mostrarErro[1]?></p>
+                <div class="alert-message <?=$mostrarAlerta[0]?>" >
+                    <p><?=$mostrarAlerta[1]?></p>
                 </div>
                 <input type="submit" value="ENTRAR" class="g-recaptcha" data-sitekey="6LcVPCYqAAAAAFzQf0v3u4C10h6RFTYOgKJYpogE" data-callback="onSubmit">
                 <p>Não tem conta? <a href="views/register.php">Criar Conta</a></p>

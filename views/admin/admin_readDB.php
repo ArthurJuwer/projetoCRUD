@@ -14,7 +14,7 @@
 
     $adminReadDb = new AdminReadDataBase;
 
-    $emailLogado = $adminReadDb->getEmailLogado();
+    $emailLogado = $adminReadDb->pegarEmailLogado();
 
 ?>
 <section class="left-menu">

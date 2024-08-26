@@ -4,13 +4,14 @@
             protected $usuarioEmail;
             protected $usuarioSenha; 
             protected $emailSemelhantes ;
-            protected $senhaSemelante ;
+            protected $senhaSemelante;
             protected $usuarioTipo;
             protected $ultimoLogin;
-            protected $messageError;
-            protected $showError;
+            protected $mensagemAlerta;
+            protected $aparecerAlerta;
             protected $mostrarAlerta;
             protected $tentativas;
+            protected $TABELA = 'lista_usuarios';
 
             public function __construct(){
                 $this->receberDadosFormulario();
@@ -31,7 +32,7 @@
                     echo '<script>
                         setTimeout(function() {
                             window.location.reload();
-                        }, 5000); // Recarrega a página após 5 segundos
+                        }, 5000);
                     </script>';
                     $this->resetarVariaveisAlerta();
                 }
@@ -47,16 +48,15 @@
                 $_SESSION['logado'] = $_POST['checkbox'] ?? '';
                 if($_SESSION['logado'] == true){
                     $_SESSION['email_logado'] = $this->usuarioEmail;
-                    // $_SESSION['senha_logado'] = $this->usuarioSenha;
                 }
             }
 
             private function verificarTentativasUsuario(){
                 
                 if($this->tentativas >= 3){
-                    $this->mostrarErro();
-                    $this->messageError = 'Erro! Este email esta suspenso por enquanto.';
-                    $this->showError = 'on';
+                    $this->mostrarAlerta();
+                    $this->mensagemAlerta = 'Erro! Este email esta suspenso por enquanto.';
+                    $this->aparecerAlerta = 'on';
                     
                 } else {
                     $this->tentativas++;
@@ -64,11 +64,9 @@
                 }
             }
             private function atualizarTentativasUsuario(){
-                $pdo = conectar();
+                $pdo = conectar();             
 
-                $TABELA = 'lista_usuarios';
-
-                $stmt = $pdo->prepare("UPDATE $TABELA SET attemptsEmail = :attemptsEmail WHERE email = :email");
+                $stmt = $pdo->prepare("UPDATE $this->TABELA SET attemptsEmail = :attemptsEmail WHERE email = :email");
 
                 $stmt->bindParam(':attemptsEmail', $this->tentativas);
                 $stmt->bindParam(':email', $this->usuarioEmail);
@@ -79,9 +77,7 @@
             private function receberDadosBancoDados(){
                 $pdo = conectar();
 
-                $TABELA = 'lista_usuarios';
-
-                $stmt = $pdo->prepare("SELECT * FROM $TABELA WHERE email LIKE :email");
+                $stmt = $pdo->prepare("SELECT * FROM $this->TABELA WHERE email LIKE :email");
 
                 $stmt->execute( array ( 'email' => '%' . $this->usuarioEmail . '%' ) );
 
@@ -101,14 +97,13 @@
                 if($valoresIguaisBancoDadosFormulario && $usuarioNaoEstaSuspenso) {   
                     $this->redirecionarDeAcordoComTipoUsuario();
                 } else {
-                    $this->mostrarErro();
-                    $this->messageError = 'Erro! Verfique se os dados estão certos.';
-                    $this->showError = 'on';
+                    $this->mostrarAlerta();
+                    $this->mensagemAlerta = 'Erro! Verfique se os dados estão certos.';
+                    $this->aparecerAlerta = 'on';
                     $this->verificarTentativasUsuario();
                 }
             }
             protected function redirecionarDeAcordoComTipoUsuario(){
-                // session_start();
                 if(isset($_SESSION['email_logado']) && $_SESSION['email_logado'] != null){
                     $_SESSION['email_usuario'] = $_SESSION['email_logado'];
                 } else {
@@ -127,14 +122,12 @@
             }
             private function registrarLogin(){
                 $pdo = conectar();
-                $TABELA = 'lista_usuarios';
 
-                $stmt = $pdo->prepare("UPDATE $TABELA SET `lastLogin` = NOW() WHERE email = :email");
+                $stmt = $pdo->prepare("UPDATE $this->TABELA SET `lastLogin` = NOW() WHERE email = :email");
                 $stmt->execute(['email' => $_SESSION['email_usuario']]); 
-                // VER ESTA LINHA
             }
-            public function mostrarErro(){
-                $showPopUp = [$this->showError, $this->messageError];
+            public function mostrarAlerta(){
+                $showPopUp = [$this->aparecerAlerta, $this->mensagemAlerta];
                 return $showPopUp;
             }
         }

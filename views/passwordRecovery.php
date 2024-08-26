@@ -8,7 +8,7 @@
     <script src="../assets/js/passwordRecovery.js" defer></script>
 </head>
 <body>
-<?php 
+    <?php 
         require_once "../controllers/passwordRecoveryController.php";
         $passwordRecovery = new PasswordRecovery();
     ?>

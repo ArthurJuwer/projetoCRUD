@@ -1,33 +1,33 @@
 <?php 
     require_once '../../assets/php/conect.php';
     class User {
-        protected $emailLogado;
+        protected $usuarioEmail;
         protected $mostrarPop;
         protected $corPop;
         protected $mensagemPop;
+        protected $TABELA = 'lista_usuarios';
 
         public function __construct(){
             $this->obterEmailUsuarioLogado();
             $this->atualizarTentativasUsuario();
+            $this->sairConta();
         }
 
         private function atualizarTentativasUsuario(){
             $pdo = conectar();
 
-            $TABELA = 'lista_usuarios';
-
             $RESETAR_TENTATIVAS = 0;
 
-            $stmt = $pdo->prepare("UPDATE $TABELA SET attemptsEmail = :attemptsEmail WHERE email = :email");
+            $stmt = $pdo->prepare("UPDATE $this->TABELA SET attemptsEmail = :attemptsEmail WHERE email = :email");
             $stmt->bindParam(':attemptsEmail', $RESETAR_TENTATIVAS);
-            $stmt->bindParam(':email', $this->emailLogado);
+            $stmt->bindParam(':email', $this->usuarioEmail);
             $stmt->execute();
         }
 
         private function obterEmailUsuarioLogado() {
             session_start();
             if (isset($_SESSION['email_usuario']) && $_SESSION['email_usuario'] != null) {
-                $this->emailLogado = $_SESSION['email_usuario'];
+                $this->usuarioEmail = $_SESSION['email_usuario'];
             } else {
                 $this->redirecionarLogin();
             }
@@ -38,14 +38,23 @@
             $this->alertaLogin();
             exit();
         }
+        private function sairConta(){
+            if (isset($_POST['sair']) && $_POST['sair'] == 'sair') {
+                session_start();
+                $_SESSION['email_logado'] = null;
+                $_SESSION['email_usuario'] = null;
+                header('Location: ../../login.php');
+                exit(); 
+            } 
+        }
         private function alertaLogin(){
             session_start();
             $_SESSION['mensagem_alerta'] = 'Logue na sua conta para acessar o painel';
             $_SESSION['mostrar_alerta'] = 'red on';
         }
 
-        public function getEmailLogado() {
-            return $this->emailLogado;
+        public function pegarEmailLogado() {
+            return $this->usuarioEmail;
         }
         
     }
@@ -176,9 +185,8 @@
 
         public function recuperarDadosUsuario(){
             $pdo = conectar();
-            $TABELA = 'lista_usuarios';
-            $stmt = $pdo->prepare("SELECT * FROM $TABELA WHERE email = :email");
-            $stmt->bindParam(':email', $this->emailLogado);
+            $stmt = $pdo->prepare("SELECT * FROM $this->TABELA WHERE email = :email");
+            $stmt->bindParam(':email', $this->usuarioEmail);
             $stmt->execute();
             $linha = $stmt->fetch(PDO::FETCH_ASSOC);
 
