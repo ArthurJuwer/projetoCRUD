@@ -14,11 +14,10 @@
             protected $TABELA = 'lista_usuarios';
 
             public function __construct(){
+                $this-> verificarLogado();
                 $this->receberDadosFormulario();
                 $this->receberDadosBancoDados();
                 $this->resetarTempoAlerta();
-                $this-> verificarLogado();
-                
             }
 
             public function verificarLogado(){
@@ -66,15 +65,15 @@
             }
     
             private function enviarEmailAdmin() {
-                $EmailAdmins = ['arthurjuwer@gmail.com'];
+                $emailAdmins = ['arthurjuwer@gmail.com'];
                 // pode colocar opcao de escolher um email aleatorio [numero aleatorio ao inves do 0]
                 // posso adicionar uma coluna no banco de dados para caso ja tenha enviado esse email nao poder
                 // evitar spam
 
-                $para = $EmailAdmins[0];
+                $para = $emailAdmins[0];
                 $assunto = 'Alerta de Usuario Bloqueado';
                 $mensagem = "O usuario com email '$this->usuarioEmail' foi bloqueado por errar a senha mais de 3x seguidas";
-                $headers = 'From:' . $EmailAdmins[0];
+                $headers = 'From:' . $emailAdmins[0];
     
                 if (!mail($para, $assunto, $mensagem, $headers)) {
                     $this->mensagemAlerta = 'Falha ao enviar o e-mail.';

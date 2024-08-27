@@ -12,8 +12,6 @@
     <?php 
     session_start();
 
-    // var_dump($_SESSION['email_logado']);
-
     $temAlerta = isset($_SESSION['mostrar_alerta']) ? $_SESSION['mostrar_alerta'] : '';
     $mensagemAlerta = isset($_SESSION['mensagem_alerta']) ? $_SESSION['mensagem_alerta'] : '';
 
